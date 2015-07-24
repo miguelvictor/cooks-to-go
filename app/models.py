@@ -1,10 +1,26 @@
 from django.db import models
 
 
+class RecipeManager(models.Manager):
+    def has_ingredients(self, ingredients):
+        q = set([int(x) for x in ingredients.strip().split(',')])
+        recipes = self.all()
+        recipes_we_wanted = []
+
+        for k in recipes:
+            pks = set([x.ingredient.pk for x in k.recipe_components.all()])
+            if q < pks or q == pks:
+                recipes_we_wanted.append(k)
+
+        return recipes_we_wanted
+
+
 class Recipe(models.Model):
     name = models.CharField(max_length=255)
     picture = models.CharField(max_length=255)
     type = models.CharField(max_length=255)
+
+    objects = RecipeManager()
 
     def __unicode__(self):
         return self.name
