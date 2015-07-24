@@ -1,5 +1,6 @@
-from rest_framework import serializers, viewsets
 from app.models import Recipe, RecipeComponent, Ingredient, Step, Rating
+from django.http import JsonResponse
+from rest_framework import generics, serializers, viewsets
 
 
 class StepSerializer(serializers.ModelSerializer):
@@ -43,3 +44,10 @@ class RecipeSerializer(serializers.HyperlinkedModelSerializer):
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
+
+    def list(self, request):
+        ingredients = request.GET.get('ingredients', None)
+        if ingredients is not None:
+            from django.http import HttpResponse
+            self.queryset = Recipe.objects.has_ingredients(ingredients)
+        return super(RecipeViewSet, self).list(self, request)
