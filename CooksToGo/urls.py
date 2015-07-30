@@ -1,14 +1,15 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from app.models import Recipe
-from serializers import RecipeViewSet
+from . import serializers
 
 from rest_framework import routers
 
 
 router = routers.DefaultRouter()
-router.register(r'recipes', RecipeViewSet)
+router.register(r'recipes', serializers.RecipeViewSet)
+router.register(r'recipe-types', serializers.RecipeTypeViewSet)
+router.register(r'ingredient-types', serializers.IngredientTypeViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),

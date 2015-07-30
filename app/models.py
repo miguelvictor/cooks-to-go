@@ -15,10 +15,18 @@ class RecipeManager(models.Manager):
         return recipes_we_wanted
 
 
+class RecipeType(models.Model):
+    name = models.CharField(max_length=255)
+    picture = models.URLField()
+
+    def __unicode__(self):
+        return self.name
+
+
 class Recipe(models.Model):
     name = models.CharField(max_length=255)
-    picture = models.CharField(max_length=255)
-    type = models.CharField(max_length=255)
+    picture = models.URLField()
+    type = models.ForeignKey(RecipeType, related_name='recipes')
 
     objects = RecipeManager()
 
@@ -28,7 +36,7 @@ class Recipe(models.Model):
 
 class Step(models.Model):
     recipe = models.ForeignKey(Recipe, related_name='steps')
-    sequence = models.IntegerField(default=0)
+    sequence = models.IntegerField(default=1)
     instruction = models.TextField()
 
     def __unicode__(self):
@@ -43,10 +51,19 @@ class Rating(models.Model):
         return self.rating
 
 
+class IngredientType(models.Model):
+    name = models.CharField(max_length=255)
+    picture = models.URLField()
+
+    def __unicode__(self):
+        return self.name
+
+
 class Ingredient(models.Model):
-    picture = models.CharField(max_length=255)
+    picture = models.URLField()
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
+    type = models.ForeignKey(IngredientType, related_name='ingredients')
 
     def __unicode__(self):
         return self.name
