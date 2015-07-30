@@ -41,6 +41,7 @@ class RecipeSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class RecipeTypeSerializer(serializers.HyperlinkedModelSerializer):
+    recipes = RecipeSerializer(many=True, read_only=True)
 
     class Meta:
         model = models.RecipeType
@@ -53,6 +54,7 @@ class RecipeTypeSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class IngredientTypeSerializer(serializers.HyperlinkedModelSerializer):
+    ingredients = IngredientSerializer(many=True, read_only=True)
 
     class Meta:
         model = models.IngredientType
@@ -83,3 +85,8 @@ class RecipeTypeViewSet(viewsets.ReadOnlyModelViewSet):
 class IngredientTypeViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.IngredientType.objects.all()
     serializer_class = IngredientTypeSerializer
+
+
+class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = models.Ingredient.objects.all()
+    serializer_class = IngredientSerializer

@@ -9,6 +9,7 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 router.register(r'recipes', serializers.RecipeViewSet)
 router.register(r'recipe-types', serializers.RecipeTypeViewSet)
+router.register(r'ingredients', serializers.IngredientViewSet)
 router.register(r'ingredient-types', serializers.IngredientTypeViewSet)
 
 urlpatterns = [
