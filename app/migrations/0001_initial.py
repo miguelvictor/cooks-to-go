@@ -43,13 +43,15 @@ class Migration(migrations.Migration):
                 ('banner', models.URLField()),
                 ('icon', models.URLField()),
                 ('name', models.CharField(max_length=255)),
+                ('description', models.TextField()),
             ],
         ),
         migrations.CreateModel(
             name='RecipeComponent',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('quantity', models.IntegerField(default=1)),
+                ('quantity', models.FloatField()),
+                ('extra', models.CharField(max_length=255, null=True, blank=True)),
                 ('ingredient', models.OneToOneField(to='app.Ingredient')),
             ],
         ),
@@ -65,8 +67,8 @@ class Migration(migrations.Migration):
             name='Step',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('instruction', models.TextField()),
                 ('sequence', models.IntegerField(default=1)),
+                ('instruction', models.TextField()),
                 ('recipe', models.ForeignKey(related_name='steps', to='app.Recipe')),
             ],
         ),
