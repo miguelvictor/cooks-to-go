@@ -13,7 +13,7 @@ router.register(r'ingredients', serializers.IngredientViewSet)
 router.register(r'ingredient-types', serializers.IngredientTypeViewSet)
 
 urlpatterns = [
-    url(r'^', include(router.urls)),
+    url(r'^api/', include(router.urls)),
     url(
         r'^api-auth/',
         include('rest_framework.urls', namespace='rest_framework')

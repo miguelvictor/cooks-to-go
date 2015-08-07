@@ -11,8 +11,8 @@ class RecipeManager(models.Manager):
             # output : [['recipe1', 'recipe2'], ['recipe3']]
             try:
                 recipe_component = RecipeComponent.objects.filter(
-                    quantity__gte=ingredient['quantity'],
-                    unit_of_measure__name__iexact=ingredient['unit'],
+                    quantity__lte=ingredient['quantity'],
+                    unit_of_measure__pk=ingredient['unit'],
                     ingredient__pk=ingredient['ingredient'],
                 )
                 recipes = recipe_component[0].recipe_set.all()
@@ -28,7 +28,7 @@ class RecipeManager(models.Manager):
 
             for i in range(1, length):
                 try:
-                    recipe_ok = list(recipe_ok & set(recipe_set[i]))
+                    recipe_ok = recipe_ok & set(recipe_set[i])
                 except IndexError:
                     pass
 
@@ -36,7 +36,7 @@ class RecipeManager(models.Manager):
 
         # recipe_set.length here is 1 so we need to return the first element
         # which is a list containing the actual recipes
-        return recipe_set[0]
+        return recipe_set[0] if length is 1 else []
 
 
 class RecipeType(models.Model):
@@ -115,7 +115,8 @@ class Step(models.Model):
     recipe = models.ForeignKey(Recipe, related_name='steps')
 
     def __unicode__(self):
-        return 'Step ' + str(self.sequence) + ' of ' + self.recipe.name
+        # return 'Step ' + str(self.sequence) + ' of ' + self.recipe.name
+        return 'Step %s' % str(self.sequence)
 
 
 class Rating(models.Model):

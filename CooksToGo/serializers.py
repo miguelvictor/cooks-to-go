@@ -1,5 +1,13 @@
 from app import models
 from rest_framework import serializers, viewsets
+from app.utils import normalize_recipe_params
+
+
+class UnitOfMeasureSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.UnitOfMeasure
+        fields = ('pk', 'name')
 
 
 class StepSerializer(serializers.ModelSerializer):
@@ -9,52 +17,7 @@ class StepSerializer(serializers.ModelSerializer):
         fields = ('sequence', 'instruction')
 
 
-class IngredientSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = models.Ingredient
-        fields = ('pk', 'picture', 'name', 'description')
-
-
-class RecipeComponentSerializer(serializers.ModelSerializer):
-    ingredient = IngredientSerializer(many=False, read_only=True)
-
-    class Meta:
-        model = models.RecipeComponent
-        fields = ('quantity', 'unit_of_measure', 'ingredient')
-
-
-class RecipeSerializer(serializers.HyperlinkedModelSerializer):
-    recipe_components = RecipeComponentSerializer(many=True, read_only=True)
-    steps = StepSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = models.Recipe
-        fields = (
-            'pk',
-            'name',
-            'picture',
-            'type',
-            'recipe_components',
-            'steps'
-        )
-
-
-class RecipeTypeSerializer(serializers.HyperlinkedModelSerializer):
-    recipes = RecipeSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = models.RecipeType
-        fields = (
-            'pk',
-            'name',
-            'picture',
-            'recipes',
-        )
-
-
 class IngredientTypeSerializer(serializers.HyperlinkedModelSerializer):
-    ingredients = IngredientSerializer(many=True, read_only=True)
 
     class Meta:
         model = models.IngredientType
@@ -62,7 +25,68 @@ class IngredientTypeSerializer(serializers.HyperlinkedModelSerializer):
             'pk',
             'name',
             'picture',
-            'ingredients',
+        )
+
+
+class IngredientSerializer(serializers.ModelSerializer):
+    type = IngredientTypeSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = models.Ingredient
+        fields = ('pk', 'banner', 'type', 'icon', 'name', 'description')
+
+
+class RecipeComponentSerializer(serializers.ModelSerializer):
+    ingredient = IngredientSerializer(many=False, read_only=True)
+    unit_of_measure = UnitOfMeasureSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = models.RecipeComponent
+        fields = ('quantity', 'unit_of_measure', 'ingredient')
+
+
+class RecipeOverviewSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Recipe
+        fields = (
+            'pk',
+            'url',
+            'name',
+            'description',
+            'banner',
+            'icon',
+            'type',
+        )
+
+
+class RecipeTypeSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = models.RecipeType
+        fields = (
+            'pk',
+            'name',
+            'picture',
+        )
+
+
+class RecipeSerializer(serializers.HyperlinkedModelSerializer):
+    recipe_components = RecipeComponentSerializer(many=True, read_only=True)
+    steps = StepSerializer(many=True, read_only=True)
+    type = RecipeTypeSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = models.Recipe
+        fields = (
+            'pk',
+            'name',
+            'description',
+            'banner',
+            'icon',
+            'type',
+            'recipe_components',
+            'steps'
         )
 
 
@@ -71,9 +95,21 @@ class RecipeViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = RecipeSerializer
 
     def list(self, request):
-        ingredients = request.GET.get('ingredients', None)
-        if ingredients is not None:
-            self.queryset = models.Recipe.objects.has_ingredients(ingredients)
+        '''
+        Method override for URLs like:
+        http://<domain>/recipes/?quantities=1,2,3&units=1,2,3&ingredients=1,2,3
+        '''
+        data = normalize_recipe_params(
+            request.GET.get('quantities', None),
+            request.GET.get('units', None),
+            request.GET.get('ingredients', None),
+        )
+
+        # let's change the serializer for listing recipes
+        # so that ingredients and steps are not included
+        self.serializer_class = RecipeOverviewSerializer
+        if data is not None:
+            self.queryset = models.Recipe.objects.has_ingredients(data)
         return super(RecipeViewSet, self).list(self, request)
 
 

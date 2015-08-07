@@ -1,37 +1,49 @@
 from django.test import TestCase
+
 from utils import normalize_recipe_params as qwe
+from models import Recipe
 
 
 class UtilsTests(TestCase):
 
     def test_normalize_recipe_params_should_work(self):
-        quantities = [1, 2, 3]
-        units = ['a', 'b', 'c']
-        ingredients = ['A', 'B', 'C']
+        quantities = '1,2,3'
+        units = '4,5,6'
+        ingredients = '7,8,9'
 
         a = qwe(quantities, units, ingredients)
 
         expected_result = [
-            {'quantity': 1, 'unit': 'a', 'ingredient': 'A'},
-            {'quantity': 2, 'unit': 'b', 'ingredient': 'B'},
-            {'quantity': 3, 'unit': 'c', 'ingredient': 'C'},
+            {'quantity': 1, 'unit': 4, 'ingredient': 7},
+            {'quantity': 2, 'unit': 5, 'ingredient': 8},
+            {'quantity': 3, 'unit': 6, 'ingredient': 9},
         ]
 
         self.assertEquals(a, expected_result)
 
-    def test_intersection(self):
-        a = ['a', 'b', 'c', 'd', 'e']
-        b = ['a', 'b', 'c']
 
-        c = sorted(list(set(a) & set(b)))
-        expected_result = ['a', 'b', 'c']
+class CustomRecipeManagerTests(TestCase):
 
-        self.assertEquals(c, expected_result)
+    fixtures = ['test_data.json']
 
-        a = [1, 2, 3, 4, 5]
-        b = [1, 2, 3]
+    def test_recipe_has_ingredients_with_existing_recipe(self):
+        quantities = '0.5,2,2,1,0.25,0.25'
+        units = '5,1,1,1,2,2'
+        ingredients = '2,3,4,5,6,7'
 
-        c = sorted(list(set(a) & set(b)))
-        expected_result = [1, 2, 3]
+        data = qwe(quantities, units, ingredients)
 
-        self.assertEquals(c, expected_result)
+        recipes = Recipe.objects.has_ingredients(data)
+
+        self.assertEquals(len(recipes), 1)
+
+    def test_recipe_has_ingredients_with_incorrect_params(self):
+        quantities = '1,2,3,4'
+        units = '5,2,1,4'
+        ingredients = '7,2,1,4'
+
+        data = qwe(quantities, units, ingredients)
+
+        recipes = Recipe.objects.has_ingredients(data)
+
+        self.assertFalse(recipes)
