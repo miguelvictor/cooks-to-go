@@ -14,9 +14,10 @@ class Migration(migrations.Migration):
             name='Ingredient',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('picture', models.URLField()),
-                ('name', models.CharField(max_length=255)),
+                ('banner', models.URLField()),
                 ('description', models.CharField(max_length=255)),
+                ('icon', models.URLField()),
+                ('name', models.CharField(max_length=255)),
             ],
         ),
         migrations.CreateModel(
@@ -32,14 +33,16 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('rating', models.IntegerField(default=0)),
+                ('who', models.CharField(max_length=b'20')),
             ],
         ),
         migrations.CreateModel(
             name='Recipe',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('banner', models.URLField()),
+                ('icon', models.URLField()),
                 ('name', models.CharField(max_length=255)),
-                ('picture', models.URLField()),
             ],
         ),
         migrations.CreateModel(
@@ -47,9 +50,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('quantity', models.IntegerField(default=1)),
-                ('unit_of_measure', models.CharField(max_length=255)),
                 ('ingredient', models.OneToOneField(to='app.Ingredient')),
-                ('recipe', models.ForeignKey(related_name='recipe_components', to='app.Recipe')),
             ],
         ),
         migrations.CreateModel(
@@ -64,15 +65,32 @@ class Migration(migrations.Migration):
             name='Step',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('sequence', models.IntegerField(default=0)),
                 ('instruction', models.TextField()),
+                ('sequence', models.IntegerField(default=1)),
                 ('recipe', models.ForeignKey(related_name='steps', to='app.Recipe')),
             ],
+        ),
+        migrations.CreateModel(
+            name='UnitOfMeasure',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=255)),
+            ],
+        ),
+        migrations.AddField(
+            model_name='recipecomponent',
+            name='unit_of_measure',
+            field=models.ForeignKey(to='app.UnitOfMeasure'),
+        ),
+        migrations.AddField(
+            model_name='recipe',
+            name='recipe_components',
+            field=models.ManyToManyField(to='app.RecipeComponent'),
         ),
         migrations.AddField(
             model_name='recipe',
             name='type',
-            field=models.ForeignKey(to='app.RecipeType'),
+            field=models.ForeignKey(related_name='recipes', to='app.RecipeType'),
         ),
         migrations.AddField(
             model_name='rating',
@@ -82,6 +100,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='ingredient',
             name='type',
-            field=models.ForeignKey(to='app.IngredientType'),
+            field=models.ForeignKey(related_name='ingredients', to='app.IngredientType'),
         ),
     ]

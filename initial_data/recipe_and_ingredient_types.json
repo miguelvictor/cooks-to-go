@@ -1,0 +1,98 @@
+[
+{
+    "fields": {
+        "picture": "http://example.url/because-kapoy-ug-search.png",
+        "name": "Appetizer"
+    },
+    "model": "app.recipetype",
+    "pk": 1
+},
+{
+    "fields": {
+        "picture": "http://example.url/because-kapoy-ug-search.png",
+        "name": "Salad"
+    },
+    "model": "app.recipetype",
+    "pk": 2
+},
+{
+    "fields": {
+        "picture": "http://example.url/because-kapoy-ug-search.png",
+        "name": "Main Dish"
+    },
+    "model": "app.recipetype",
+    "pk": 3
+},
+{
+    "fields": {
+        "picture": "http://example.url/because-kapoy-ug-search.png",
+        "name": "Dessert"
+    },
+    "model": "app.recipetype",
+    "pk": 4
+},
+{
+    "fields": {
+        "picture": "http://example.url/because-kapoy-ug-search.png",
+        "name": "Breakfast"
+    },
+    "model": "app.recipetype",
+    "pk": 5
+},
+{
+    "fields": {
+        "picture": "http://example.url/because-kapoy-ug-search.png",
+        "name": "Lunch"
+    },
+    "model": "app.recipetype",
+    "pk": 6
+},
+{
+    "fields": {
+        "picture": "http://example.url/because-kapoy-ug-search.png",
+        "name": "Condiment"
+    },
+    "model": "app.ingredienttype",
+    "pk": 1
+},
+{
+    "fields": {
+        "picture": "http://example.url/because-kapoy-ug-search.png",
+        "name": "Vegetable"
+    },
+    "model": "app.ingredienttype",
+    "pk": 2
+},
+{
+    "fields": {
+        "picture": "http://example.url/because-kapoy-ug-search.png",
+        "name": "Fruit"
+    },
+    "model": "app.ingredienttype",
+    "pk": 3
+},
+{
+    "fields": {
+        "picture": "http://example.url/because-kapoy-ug-search.png",
+        "name": "Meat"
+    },
+    "model": "app.ingredienttype",
+    "pk": 4
+},
+{
+    "fields": {
+        "picture": "http://example.url/because-kapoy-ug-search.png",
+        "name": "Chicken"
+    },
+    "model": "app.ingredienttype",
+    "pk": 5
+},
+{
+    "fields": {
+        "picture": "http://example.url/because-kapoy-ug-search.png",
+        "name": "Sweetener"
+    },
+    "model": "app.ingredienttype",
+    "pk": 6
+},
+]
