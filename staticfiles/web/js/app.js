@@ -10,7 +10,8 @@
         })
         .config(['$mdIconProvider', function ($mdIconProvider) {
             $mdIconProvider
-                .iconSet('navigation', '/static/web/icons/navigation.svg');
+                .iconSet('action', '/static/web/icons/action.svg', 24)
+                .iconSet('navigation', '/static/web/icons/navigation.svg', 24);
                 /*
                 .iconSet('action', 'svg/action-icons.svg')
                 .iconSet('device', 'svg/device-icons.svg')

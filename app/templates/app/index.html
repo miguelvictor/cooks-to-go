@@ -18,8 +18,8 @@
 				<span flex></span>
 			</div>
         </md-toolbar>
-        <md-list>
-			<md-list-item class="md-2-line" ng-repeat="item in menu" ng-click="count = count + 1" ng-init="count=0">
+        <md-list ng-init="count = 0">
+			<md-list-item layout-align="start center" class="md-2-line" ng-repeat="item in menu" ng-click="count = count + 1">
 				<div class="md-list-item-text">
 				{% verbatim %}
 					{{ item.title }}
@@ -42,18 +42,40 @@
 
     <!-- TOOLBAR and MAIN CONTAINER -->
     <div layout="column" flex>
-	    <md-toolbar layout="row">
-	      <div class="md-toolbar-tools">
-	        <md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
-	          <md-icon aria-label="Menu" md-svg-icon="navigation:menu"></md-icon>
-	        </md-button>
-	        <h1>
-	        {% verbatim %}
-	        	{{ header }}
-	        {% endverbatim %}
-	        </h1>
-	      </div>
+	    <md-toolbar layout="row" ng-show="!showSearch">
+	    	<div class="md-toolbar-tools">
+		        <md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
+		          <md-icon aria-label="Menu" md-svg-icon="navigation:menu"></md-icon>
+		        </md-button>
+		        <h1>
+		        {% verbatim %}
+		        	{{ header }}
+		        {% endverbatim %}
+		        </h1>
+		        <span flex></span>
+				<md-button ng-click="showSearch = !showSearch" class="md-icon-button">
+					<md-icon md-svg-icon="action:search" aria-label="People Icon"></md-icon>
+				</md-button>
+			</div>
 		</md-toolbar>
+		<md-toolbar class="md-hue-1" ng-show="showSearch">
+        <div class="md-toolbar-tools">
+          <md-button class="md-icon-button" ng-click="showSearch = !showSearch" aria-label="Back">
+          	<md-icon md-svg-icon="navigation:arrow_back"></md-icon>
+          </md-button>
+          <md-input-container md-theme="input" flex>
+            <label>&nbsp;</label>
+            <input class="nav-input" ng-model="search.who" placeholder="enter search" f>
+          </md-input-container>
+          <md-button aria-label="Search" class="md-icon-button" ng-click="showSearch = !showSearch">
+          	<md-icon md-svg-icon="action:search" aria-label="People Icon"></md-icon>
+          </md-button>
+          <md-button aria-label="Open Settings" class="md-icon-button" ng-click="showListBottomSheet($event)">
+            <md-icon md-svg-icon="action:more_vert"></md-icon>
+          </md-button>
+        </div>
+       
+      </md-toolbar>
 	    <md-content layout="column" flex class="md-padding">
 	    	{% verbatim %}
 	    		{{count}}
