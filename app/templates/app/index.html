@@ -22,22 +22,13 @@
 			<md-list-item layout-align="start center" class="md-2-line" ng-repeat="item in menu" ng-click="count = count + 1">
 				<div class="md-list-item-text">
 				{% verbatim %}
+				<md-icon md-svg-icon="{{ item.icon }}"></md-icon>
 					{{ item.title }}
 				{% endverbatim %}
 				</div>
 			</md-list-item>
 		</md-list>
-        <!-- <md-content>
-			<md-list>
-				<md-list-item ng-repeat="item in menu">
-					{% verbatim %}
-					<md-button>
-						{{ item.title }}
-					</md-button>
-					{% endverbatim %}
-				</md-list-item>
-			</md-list>
-		</md-content> -->
+		<md-divider></md-divider>
     </md-sidenav>
 
     <!-- TOOLBAR and MAIN CONTAINER -->
@@ -56,25 +47,22 @@
 				<md-button ng-click="showSearch = !showSearch" class="md-icon-button">
 					<md-icon md-svg-icon="action:search" aria-label="People Icon"></md-icon>
 				</md-button>
+				<md-button ng-click="showQuilt = !showQuilt" class="md-icon-button">
+					<md-icon ng-hide="showQuilt" md-svg-icon="action:view_list" aria-label="People Icon"></md-icon>
+					<md-icon ng-show="showQuilt" md-svg-icon="action:view_quilt" aria-label="People Icon"></md-icon>
+				</md-button>
 			</div>
 		</md-toolbar>
 		<md-toolbar class="md-hue-1" ng-show="showSearch">
         <div class="md-toolbar-tools">
-          <md-button class="md-icon-button" ng-click="showSearch = !showSearch" aria-label="Back">
-          	<md-icon md-svg-icon="navigation:arrow_back"></md-icon>
-          </md-button>
-          <md-input-container md-theme="input" flex>
-            <label>&nbsp;</label>
-            <input class="nav-input" ng-model="search.who" placeholder="enter search" f>
-          </md-input-container>
-          <md-button aria-label="Search" class="md-icon-button" ng-click="showSearch = !showSearch">
-          	<md-icon md-svg-icon="action:search" aria-label="People Icon"></md-icon>
-          </md-button>
-          <md-button aria-label="Open Settings" class="md-icon-button" ng-click="showListBottomSheet($event)">
-            <md-icon md-svg-icon="action:more_vert"></md-icon>
-          </md-button>
+        	<md-button class="md-icon-button" ng-click="showSearch = !showSearch" aria-label="Back">
+          		<md-icon md-svg-icon="navigation:arrow_back"></md-icon>
+        	</md-button>
+        	<md-input-container flex>
+        		<label>&nbsp;</label>
+        		<input class="nav-input" ng-model="search.who">
+        	</md-input-container>
         </div>
-       
       </md-toolbar>
 	    <md-content layout="column" flex class="md-padding">
 	    	{% verbatim %}

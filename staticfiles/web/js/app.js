@@ -27,23 +27,23 @@
             $scope.header = 'Cooks To Go';
             $scope.menu = [
             {
-                icon: '',
+                icon: 'action:home',
                 title: 'home'
             },
             {
-                icon: '',
+                icon: 'action:home',
                 title: 'recipes'
             },
             {
-                icon: '',
+                icon: 'action:home',
                 title: 'ingredients'
             },
             {
-                icon: '',
+                icon: 'action:shopping_basket',
                 title: 'virtual basket'
             },
             {
-                icon: '',
+                icon: 'action:settings',
                 title: 'settings'
             },
             ]
