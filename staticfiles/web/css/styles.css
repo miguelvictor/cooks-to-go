@@ -1,5 +1,51 @@
-md-toolbar.md-tall {
+md-toolbar.md-tall
+{
     height: 198px;
     min-height: 198px;
     max-height: 198px;
 }
+.md-padding
+{
+    padding: 0 0 8px;
+}
+
+.menu-active
+{
+    background: rgba(0,0,0,.05);
+}
+
+md-autocomplete
+{
+    width: 100%;
+}
+
+.recipe-avatar {
+	border-radius: 99%;
+}
+
+.container-custom{
+	background: #EEE;
+}
+
+.list-custom{
+	background:#4CAF50;
+	border-radius: 15px;
+}
+
+.text-white{
+	color:white;
+}
+
+md-tabs{
+	background: #FFF;
+}
+
+md-tab-content md-list,
+.full md-tabs{
+	height: calc(100%);
+}
+md-tab-content md-list-item{
+	background:white;
+	margin:2.5% 2% 0;
+}
+
