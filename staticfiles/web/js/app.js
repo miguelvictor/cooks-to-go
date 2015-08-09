@@ -23,7 +23,10 @@
         	$scope.toggleSidenav = function (menuId) {
         		$mdSidenav(menuId).toggle();
         	};
-
+            $scope.page_active = 'home';
+            $scope.setPageActive = function(index){
+                $scope.page_active = $scope.menu[index].title;
+            }
             $scope.header = 'Cooks To Go';
             $scope.menu = [
             {
@@ -46,6 +49,6 @@
                 icon: 'action:settings',
                 title: 'settings'
             },
-            ]
+            ];
         }]);
 }());

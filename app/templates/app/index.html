@@ -18,15 +18,15 @@
 				<span flex></span>
 			</div>
         </md-toolbar>
-        <md-list ng-init="count = 0">
-			<md-list-item layout-align="start center" class="md-2-line" ng-repeat="item in menu" ng-click="count = count + 1">
+        <md-list>
+        	{% verbatim %}
+			<md-list-item layout-align="start center" class="md-2-line" ng-repeat="item in menu" ng-click="setPageActive($index)">
 				<div class="md-list-item-text">
-				{% verbatim %}
-				<md-icon md-svg-icon="{{ item.icon }}"></md-icon>
+					<md-icon md-svg-icon="{{ item.icon }}"></md-icon>
 					{{ item.title }}
-				{% endverbatim %}
 				</div>
 			</md-list-item>
+			{% endverbatim %}
 		</md-list>
 		<md-divider></md-divider>
     </md-sidenav>
@@ -64,9 +64,9 @@
         	</md-input-container>
         </div>
       </md-toolbar>
-	    <md-content layout="column" flex class="md-padding">
+	    <md-content ng-click="showSearch = false" layout="column" flex class="md-padding">
 	    	{% verbatim %}
-	    		{{count}}
+	    		{{ page_active }}
 	    	{% endverbatim %}
 	    </md-content>
     </div>
