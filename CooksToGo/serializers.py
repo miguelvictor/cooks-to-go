@@ -61,6 +61,7 @@ class RecipeOverviewSerializer(serializers.ModelSerializer):
 
 
 class RecipeTypeSerializer(serializers.HyperlinkedModelSerializer):
+    recipes = RecipeOverviewSerializer(many=True, read_only=True)
 
     class Meta:
         model = models.RecipeType
@@ -68,6 +69,7 @@ class RecipeTypeSerializer(serializers.HyperlinkedModelSerializer):
             'pk',
             'name',
             'picture',
+            'recipes',
         )
 
 
