@@ -17,7 +17,15 @@ class StepSerializer(serializers.ModelSerializer):
         fields = ('sequence', 'instruction')
 
 
+class IngredientSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Ingredient
+        fields = ('pk', 'banner', 'icon', 'name', 'description')
+
+
 class IngredientTypeSerializer(serializers.HyperlinkedModelSerializer):
+    ingredients = IngredientSerializer(many=True, read_only=True)
 
     class Meta:
         model = models.IngredientType
@@ -25,15 +33,8 @@ class IngredientTypeSerializer(serializers.HyperlinkedModelSerializer):
             'pk',
             'name',
             'picture',
+            'ingredients',
         )
-
-
-class IngredientSerializer(serializers.ModelSerializer):
-    type = IngredientTypeSerializer(many=False, read_only=True)
-
-    class Meta:
-        model = models.Ingredient
-        fields = ('pk', 'banner', 'type', 'icon', 'name', 'description')
 
 
 class RecipeComponentSerializer(serializers.ModelSerializer):
