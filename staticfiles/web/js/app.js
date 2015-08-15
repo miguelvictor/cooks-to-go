@@ -95,14 +95,16 @@
             $http.get($scope.$parent.base_url('api/recipe-types'))
                 .success(function(response) {
                     $scope.recipe_types = response.results;
+                    console.log($scope.recipe_types);
                 })
                 .error(function(response) {
                     alert("Error Upon Connecting To The Server!");
+                    $scope.recipe_types = [];
                 });
 
-            $scope.get_RecipeTypes = function(){
-                return $scope.recipe_types;
-            };
+            // $scope.get_RecipeTypes = function(){
+            //     return $scope.recipe_types;
+            // };
             // $scope.toggleRecipeTab = function(index){
             //     if (index !== undefined){
             //         $scope.$parent.recipetab = index + 1;
