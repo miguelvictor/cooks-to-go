@@ -19,9 +19,24 @@
 </md-toolbar>
 <div flex layout="row">
 	<md-content>
-		test
-		{% verbatim %}
-			{{ recipesTypes }}
-		{% endverbatim %}
+		<md-tabs md-selected="recipetab" md-dynamic-height md-border-bottom md-swipe-content>
+			<md-tab ng-repeat="tab in get_RecipeTypes()" label="{{::tab.name }}" md-on-select="toggleRecipeTab($index)">
+				<md-content class="md-padding">
+					<md-list>
+						<md-list-item class="md-3-line custom-list md-whiteframe-z1 md-default-theme" ng-repeat="recipe in get_Recipes()">
+							<img class="recipe-avatar" ng-src="{{::recipe.icon }}" />
+							<div class="md-list-item-text">
+								<h4>
+									{{ recipe.name }}
+								</h4>
+								<p>
+									{{ recipe.description | truncate:200 }}
+								</p>
+							</div>
+						</md-list-item>
+					</md-list>
+				</md-content>
+			</md-tab>
+		</md-tabs>
 	</md-content>
 </div>

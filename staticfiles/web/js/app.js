@@ -81,6 +81,7 @@
                 }
             ];
             $scope.active_template = $scope.menus[0];
+            $scope.recipeDescriptionLimit = 50;
         
         }])
         .controller('SideBarCtrl', ['$scope', '$location', function($scope, $location){
@@ -90,9 +91,20 @@
             }
         }])
         .controller('RecipeCtrl', ['$http', '$scope', function($http, $scope){
+            $scope.recipetab = 0;
+            $scope.get_RecipeTypes = function(){
+                return $scope.recipe_types;
+            };
+            $scope.toggleRecipeTab = function(index){
+                if (index !== undefined){
+                    $scope.recipetab = index + 1;
+                }else{
+                    alert("Error Toogle Recipe Tab");
+                }
+            };
             $http.get($scope.$parent.base_url('api/recipe-types'))
                 .success(function(response) {
-                    
+                    $scope.recipe_types = response.results;
                 })
                 .error(function(response) {
                     alert("Error Upon Connecting To The Server!");
