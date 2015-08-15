@@ -5,16 +5,24 @@ from app import models
 
 class StepInline(admin.TabularInline):
     model = models.Step
-    ordering = ('sequence', 'instruction')
+
+
+class RecipeInline(admin.TabularInline):
+    model = models.RecipeComponent
 
 
 class RecipeAdmin(admin.ModelAdmin):
-    inlines = [StepInline]
     fieldsets = [
-        (None, {'fields': ['name',
-                           'type', 'description', 'recipe_components']}),
-        ('More Information', {'fields': ['banner', 'icon']})
+        (None, {'fields': [
+            'name', 'type', 'description',
+            'default_serving_size', 'time_to_complete',
+        ]}),
+        ('More Information', {'fields': ['banner', 'icon']}),
     ]
+
+    inlines = (RecipeInline, StepInline)
+    search_fields = 'name', 'description'
+    list_filter = 'type',
 
 
 class IngredientAdmin(admin.ModelAdmin):
@@ -22,6 +30,9 @@ class IngredientAdmin(admin.ModelAdmin):
         (None, {'fields': ['name', 'type', 'description']}),
         ('More Information', {'fields': ['banner', 'icon']}),
     ]
+
+    search_fields = 'name', 'description'
+    list_filter = 'type',
 
 admin.site.register(models.RecipeType)
 admin.site.register(models.IngredientType)

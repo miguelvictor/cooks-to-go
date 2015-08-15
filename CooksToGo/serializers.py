@@ -43,7 +43,10 @@ class RecipeComponentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.RecipeComponent
-        fields = ('quantity', 'unit_of_measure', 'ingredient')
+        fields = (
+            'quantity', 'adjective', 'unit_of_measure',
+            'ingredient', 'extra'
+        )
 
 
 class RecipeOverviewSerializer(serializers.ModelSerializer):
@@ -77,7 +80,6 @@ class RecipeTypeSerializer(serializers.HyperlinkedModelSerializer):
 class RecipeSerializer(serializers.HyperlinkedModelSerializer):
     recipe_components = RecipeComponentSerializer(many=True, read_only=True)
     steps = StepSerializer(many=True, read_only=True)
-    type = RecipeTypeSerializer(many=False, read_only=True)
 
     class Meta:
         model = models.Recipe
@@ -87,7 +89,8 @@ class RecipeSerializer(serializers.HyperlinkedModelSerializer):
             'description',
             'banner',
             'icon',
-            'type',
+            'time_to_complete',
+            'default_serving_size',
             'recipe_components',
             'steps'
         )

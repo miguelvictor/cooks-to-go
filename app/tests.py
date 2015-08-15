@@ -3,7 +3,7 @@ from django.test import TestCase
 from utils import normalize_recipe_params as qwe
 from models import Recipe
 
-
+'''
 class UtilsTests(TestCase):
 
     def test_normalize_recipe_params_should_work(self):
@@ -47,3 +47,24 @@ class CustomRecipeManagerTests(TestCase):
         recipes = Recipe.objects.has_ingredients(data)
 
         self.assertFalse(recipes)
+'''
+
+
+class FindRecipesTests(TestCase):
+
+    fixtures = ['test_data']
+
+    def test_naa_sya_tanan_ingredients(self):
+        ingredients = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        recipes = Recipe.objects.has_ingredients(ingredients)
+        self.assertEquals(len(recipes), 1)
+
+    def test_naa_sya_subset_sa_ingredients(self):
+        ingredients = [1, 2, 3]
+        recipes = Recipe.objects.has_ingredients(ingredients)
+        self.assertEquals(len(recipes), 1)
+
+    def test_wala_syay_ingredients(self):
+        ingredients = [11, 12, 123]
+        recipes = Recipe.objects.has_ingredients(ingredients)
+        self.assertEquals(len(recipes), 0)
