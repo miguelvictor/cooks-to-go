@@ -97,14 +97,7 @@
             };
             $http(config)
                 .success(function(data, status, headers, config) {
-                        if (status == 200) {
-                            console.log(data[0]); //Test code
-                            // succefull login
-
-                        }
-                        else {
-                            console.log(data); //Test code
-                        }
+                    console.log(data);
                 })
                 .error(function(data, status, headers, config) {
                     console.log('Testing console error');
