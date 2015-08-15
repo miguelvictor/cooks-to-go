@@ -82,7 +82,6 @@
             ];
             $scope.active_template = $scope.menus[0];
             $scope.recipeDescriptionLimit = 50;
-            $scope.recipetab = 0;
         
         }])
         .controller('SideBarCtrl', ['$scope', '$location', function($scope, $location){
@@ -95,13 +94,12 @@
             $http.get($scope.$parent.base_url('api/recipe-types'))
                 .success(function(response) {
                     $scope.recipe_types = response.results;
-                    console.log($scope.recipe_types);
                 })
                 .error(function(response) {
                     alert("Error Upon Connecting To The Server!");
                     $scope.recipe_types = [];
                 });
-
+            $scope.recipetab = 0;
             // $scope.get_RecipeTypes = function(){
             //     return $scope.recipe_types;
             // };
