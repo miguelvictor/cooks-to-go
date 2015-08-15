@@ -19,7 +19,8 @@
 </md-toolbar>
 <div flex layout="row">
 	{% verbatim %}
-	<md-content>
+	{{ recipe_types }}
+	<!-- <md-content>
 		<md-tabs md-selected="recipetab" md-dynamic-height md-border-bottom md-swipe-content>
 			<md-tab ng-repeat="tab in recipe_types" label="{{::tab.name }}">
 				<md-content class="md-padding">
@@ -39,6 +40,6 @@
 				</md-content>
 			</md-tab>
 		</md-tabs>
-	</md-content>
+	</md-content> -->
 	{% endverbatim %}
 </div>
