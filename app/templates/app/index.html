@@ -18,12 +18,12 @@
 				<span flex></span>
 			</div>
         </md-toolbar>
-        <md-list>
+        <md-list ng-controller="SideBarCtrl">
         	{% verbatim %}
-			<md-list-item layout-align="start center" ng-repeat="item in menu" class="md-1-line" ng-class="getPageActiveClass($index)"  ng-click="setPageActive($index)">
+			<md-list-item layout-align="start center" ng-repeat="menu in menus" class="md-1-line"  ng-click="toogleTemplate($index)">
 				<div class="md-list-item-text">
-					<md-icon md-svg-icon="{{::item.icon }}"></md-icon>
-					{{::item.title }}
+					<md-icon md-svg-icon="{{::menu.icon }}"></md-icon>
+					{{::menu.title }}
 				</div>
 			</md-list-item>
 			{% endverbatim %}
@@ -32,96 +32,13 @@
     </md-sidenav>
 
     <!-- TOOLBAR and MAIN CONTAINER -->
-    <div layout="column" flex>
-	    <md-toolbar layout="row" ng-show="!showSearch">
-	    	<div class="md-toolbar-tools">
-		        <md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
-		          <md-icon aria-label="Menu" md-svg-icon="navigation:menu"></md-icon>
-		        </md-button>
-		        <h1>
-		        {% verbatim %}
-		        	{{ page_active }}
-		        {% endverbatim %}
-		        </h1>
-		        <span flex></span>
-				<md-button ng-click="showSearch = !showSearch" class="md-icon-button">
-					<md-icon md-svg-icon="action:search" aria-label="People Icon"></md-icon>
-				</md-button>
-				<md-button ng-click="grid = !grid" class="md-icon-button">
-					<md-icon class="grid-icons" ng-hide="getGrid()" md-svg-icon="action:view_list" aria-label="List Grid"></md-icon>
-					<md-icon class="grid-icons" ng-show="getGrid()" md-svg-icon="action:view_quilt" aria-label="Dynamic Grid"></md-icon>
-				</md-button>
-			</div>
-		</md-toolbar>
-		<md-toolbar class="md-hue-1 md-whiteframe-z1" ng-show="showSearch">
-	        <div class="md-toolbar-tools">
-	        	<md-button class="md-icon-button" ng-click="showSearch = !showSearch" aria-label="Back">
-	          		<md-icon md-svg-icon="navigation:arrow_back"></md-icon>
-	        	</md-button>
-	        	<md-autocomplete
-					ng-disabled="ctrl.isDisabled"
-					md-no-cache="ctrl.noCache"
-					md-selected-item="ctrl.selectedItem"
-					md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
-					md-search-text="ctrl.searchText"
-					md-selected-item-change="ctrl.selectedItemChange(item)"
-					md-items="item in ctrl.querySearch(ctrl.searchText)"
-					md-item-text="item.display"
-					md-min-length="0"
-					placeholder="Search Here!">
-					<md-item-template>
-						<span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.display}}</span>
-					</md-item-template>
-					<md-not-found>
-						No matches found for "{{ctrl.searchText}}".
-					</md-not-found>
-		      </md-autocomplete>
-	        </div>
-    	</md-toolbar>
-	    <md-content ng-click="showSearch = false" layout="column" flex class="md-padding">
-	    	{% verbatim %}
-	    		<div ng-show="getPageActive(0)">
-	    			<md-tabs md-dynamic-height="true" md-autoselect="true"  md-swipe-content="true">
-						<md-tab ng-repeat="type in recipesTypes" label="{{ type.name }}">
-							<md-tab-body>
-						    	<md-list class="md-2-line" ng-hide="getGrid()">
-									<md-list-item class="list-custom" ng-repeat="recipe in recipes">
-										<div class="md-tile-left inset" hide-sm>
-											<recipe-avatar></recipe-avatar>
-										</div>
-										<div class="md-tile-content md-list-item-text">
-											<h3 class="text-white">
-												{{recipe.name}}
-											</h3>
-											<p>
-												{{ recipe.description | limitTo:recipeDescriptionLimit }} ...
-											</p>
-										</div>
-									</md-list-item>
-								</md-list>
-								<md-grid-list ng-show="getGrid()"
-									md-cols-sm="1" md-cols-md="2" md-cols-gt-md="6"
-									md-row-height-gt-md="1:1" md-row-height="4:3"
-									md-gutter="8px" md-gutter-gt-sm="4px" >
-									<md-grid-tile ng-repeat="recipe in recipes"
-									md-rowspan="{{tile.span.row}}"
-									md-colspan="{{tile.span.col}}"
-									md-colspan-sm="1"
-									ng-class="lightPurple" >
-									<md-icon md-svg-icon=""></md-icon>
-									<md-grid-tile-footer>
-										<h3>{{recipe.name}}</h3>
-										</md-grid-tile-footer>
-									</md-grid-tile>
-								</md-grid-list>
-						    </md-tab-body>
-						</md-tab>
-					</md-tabs>
-	    		</div>
-	    	{% endverbatim %}
-	    </md-content>
+    <div layout="row" flex>
+		<md-content flex>
+			<div ng-view class="view-animate"></div>
+		</md-content>
     </div>
 	<script src="{% static 'web/js/angular.min.js' %}"></script>
+	<script src="{% static 'web/js/angular-route.min.js' %}"></script>
 	<script src="{% static 'web/js/angular-animate.min.js' %}"></script>
 	<script src="{% static 'web/js/angular-aria.min.js' %}"></script>
 	<script src="{% static 'web/js/angular-material.min.js' %}"></script>
