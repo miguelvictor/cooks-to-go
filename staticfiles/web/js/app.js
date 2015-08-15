@@ -90,18 +90,12 @@
             }
         }])
         .controller('RecipeCtrl', ['$http', '$scope', function($http, $scope){
-            var config = {
-                method: 'GET',
-                withCredentials: true,
-                url: $scope.$parent.base_url('api/recipe-types')
-            };
-            $http(config)
+            $http.get($scope.$parent.base_url('api/recipe-types'))
                 .success(function(response) {
-                    console.log(response.results);
+                    
                 })
-                .error(function(data, status, headers, config) {
-                    console.log('Testing console error');
-                    console.log($scope.$parent.base_url('api/recipe-types'));
+                .error(function(response) {
+                    alert("Error Upon Connecting To The Server!");
                 });
         }]);
 }());
