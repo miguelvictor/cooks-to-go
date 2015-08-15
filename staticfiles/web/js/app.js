@@ -96,8 +96,8 @@
                 url: $scope.$parent.base_url('api/recipe-types')
             };
             $http(config)
-                .success(function(data, status, headers, config) {
-                    console.log(data);
+                .success(function(response) {
+                    console.log(response.results);
                 })
                 .error(function(data, status, headers, config) {
                     console.log('Testing console error');
