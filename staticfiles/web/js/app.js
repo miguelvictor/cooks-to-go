@@ -100,9 +100,9 @@
                     alert("Error Upon Connecting To The Server!");
                 });
 
-            // $scope.get_RecipeTypes = function(){
-            //     return $scope.recipe_types;
-            // };
+            $scope.get_RecipeTypes = function(){
+                return $scope.recipe_types;
+            };
             // $scope.toggleRecipeTab = function(index){
             //     if (index !== undefined){
             //         $scope.$parent.recipetab = index + 1;
