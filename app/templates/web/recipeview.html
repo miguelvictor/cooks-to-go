@@ -1,11 +1,11 @@
-<md-toolbar md-scroll-shrink class="toolbar-switch">
-	<div class="md-toolbar-tools" ng-switch on="active_template">
+<md-toolbar md-scroll-shrink>
+	<div class="md-toolbar-tools">
 		<md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
 			<md-icon aria-label="Menu" md-svg-icon="navigation:menu"></md-icon>
 		</md-button>
-		<h1 class="animate-switch" ng-switch-default>
+		<h1>
 		    {% verbatim %}
-		    	{{ active_template.title }}
+		    	{{::active_template.title }}
 		    {% endverbatim %}
 		</h1>
 		<span flex></span>
@@ -17,29 +17,26 @@
 		</md-button>
 	</div>
 </md-toolbar>
-<div flex layout="row">
-	{% verbatim %}
-	{{ recipe_types }}
-	<!-- <md-content>
-		<md-tabs md-selected="recipetab" md-dynamic-height md-border-bottom md-swipe-content>
-			<md-tab ng-repeat="tab in recipe_types" label="{{::tab.name }}">
-				<md-content class="md-padding">
-					<md-list>
-						<md-list-item class="md-3-line custom-list md-whiteframe-z1 md-default-theme" ng-repeat="recipe in get_Recipes()" ng-click="toogleRecipe(recipe.pk)" md-swipe-right="onSwipe('Right')" md-swipe-left="onSwipe('Left')">
-							<img class="recipe-avatar" ng-src="{{::recipe.icon }}" />
-							<div class="md-list-item-text">
-								<h4>
-									{{ recipe.name }}
-								</h4>
-								<p>
-									{{ recipe.description | truncate:200 }}
-								</p>
-							</div>
-						</md-list-item>
-					</md-list>
-				</md-content>
+<div flex layout="column">
+	<md-content>
+		{% verbatim %}
+		<md-tabs class="md-primary" md-stretch-tabs="always" md-dynamic-height md-border-bottom md-selected="recipetab">
+			<md-tab ng-repeat="tab in recipe_types" label="{{::tab.name }}" md-on-select="toggleRecipeTab($index)">
+				<md-list>
+					<md-list-item class="md-padding md-3-line custom-list md-whiteframe-z1 md-default-theme" ng-repeat="recipe in tab.recipes">
+						<img class="recipe-avatar" ng-src="{{::recipe.icon }}" />
+						<div class="md-list-item-text">
+							<h4>
+								{{::recipe.name }}
+							</h4>
+							<p>
+								{{::recipe.description | truncate:200 }}	
+							</p>
+						</div>
+					</md-list-item>
+				</md-list>
 			</md-tab>
 		</md-tabs>
-	</md-content> -->
-	{% endverbatim %}
+		{% endverbatim %}
+	</md-content>
 </div>

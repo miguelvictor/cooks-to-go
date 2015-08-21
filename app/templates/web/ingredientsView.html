@@ -1,11 +1,11 @@
-<md-toolbar md-scroll-shrink class="toolbar-switch">
+<md-toolbar md-scroll-shrink>
 	<div class="md-toolbar-tools">
 		<md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
 			<md-icon aria-label="Menu" md-svg-icon="navigation:menu"></md-icon>
 		</md-button>
 		<h1>
 		    {% verbatim %}
-		    	{{ active_template.title }}
+		    	{{::active_template.title }}
 		    {% endverbatim %}
 		</h1>
 		<span flex></span>
@@ -17,3 +17,26 @@
 		</md-button>
 	</div>
 </md-toolbar>
+<div flex layout="column">
+	<md-content>
+		{% verbatim %}
+		<md-tabs class="md-primary" md-stretch-tabs="always" md-border-bottom md-selected="ingredientstab">
+			<md-tab ng-repeat="tab in ingredient_types" label="{{::tab.name }}" md-on-select="toggleIngridientsTab($index)">
+				<md-list>
+					<md-list-item class="md-3-line custom-list md-whiteframe-z1 md-default-theme" ng-repeat="ingredient in tab.ingredients">
+						<img class="recipe-avatar" ng-src="{{::ingredient.icon }}" />
+						<div class="md-list-item-text">
+							<h4>
+								{{::ingredient.name }}
+							</h4>
+							<p>
+								{{::ingredient.description | truncate:200 }}	
+							</p>
+						</div>
+					</md-list-item>
+				</md-list>
+			</md-tab>
+		</md-tabs>
+		{% endverbatim %}
+	</md-content>
+</div>

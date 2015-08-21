@@ -29,8 +29,8 @@
                     })
                     .when('/ingredients', {
                         templateUrl: '/visit/ingredients',
-                        controller: 'RecipeCtrl',
-                        controllerAs: 'Recipe'
+                        controller: 'IngridientsCtrl',
+                        controllerAs: 'Ingridients'
                     })
                     .when('/virtual-basket', {
                         templateUrl: '/visit/virtual-basket',
@@ -46,6 +46,25 @@
                         redirectTo: '/recipes'
                     });
         }])
+        .filter('truncate', function (){
+            return function (text, length, end){
+                if (text !== undefined){
+                    if (isNaN(length)){
+                        length = 10;
+                    }
+
+                    if (end === undefined){
+                        end = "...";
+                    }
+
+                    if (text.length <= length || text.length - end.length <= length){
+                        return text;
+                    }else{
+                        return String(text).substring(0, length - end.length) + end;
+                    }
+                }
+            };
+        })
         .controller('AppCtrl', ['$http', '$scope', '$mdSidenav', '$location', function ($http, $scope, $mdSidenav, $location) {
             // Functions
             $scope.toggleSidenav = function (menuId) {
@@ -91,6 +110,7 @@
             }
         }])
         .controller('RecipeCtrl', ['$http', '$scope', function($http, $scope){
+            $scope.recipetab = 1;
             $http.get($scope.$parent.base_url('api/recipe-types'))
                 .success(function(response) {
                     $scope.recipe_types = response.results;
@@ -99,16 +119,30 @@
                     alert("Error Upon Connecting To The Server!");
                     $scope.recipe_types = [];
                 });
-            $scope.recipetab = 0;
-            // $scope.get_RecipeTypes = function(){
-            //     return $scope.recipe_types;
-            // };
-            // $scope.toggleRecipeTab = function(index){
-            //     if (index !== undefined){
-            //         $scope.$parent.recipetab = index + 1;
-            //     }else{
-            //         alert("Error Toogle Recipe Tab");
-            //     }
-            // };
+            $http.get($scope.$parent.base_url('api/recipes'))
+                .success(function(response) {
+                    $scope.recipes = response.results;
+                })
+                .error(function(response) {
+                    alert("Error Upon Collecting Recipies");
+                });
+            $scope.toggleRecipeTab = function(index){
+                $scope.recipetab = index;
+            }
+        }])
+        .controller('IngridientsCtrl', ['$http', '$scope', function($http, $scope){
+            $scope.ingredientstab = 1;
+            // Get Ingridients with their corrisponding types
+            $http.get($scope.$parent.base_url('api/ingredient-types/'))
+                .success(function(response){
+                    $scope.ingredient_types = response.results;
+                })
+                .error(function(response){
+                    alert('Error Upon Collecting Ingredients');
+                    $scope.ingredient_types = [];
+                });
+            $scope.toggleIngridientsTab = function(index){
+                $scope.ingredientstab = index;
+            };
         }]);
 }());

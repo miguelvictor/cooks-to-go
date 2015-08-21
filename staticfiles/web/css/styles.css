@@ -1,3 +1,12 @@
+/*Recipe List*/
+md-list-item..custom-list{
+  padding:15px 16px;
+}
+.custom-list img{
+  margin: 10px 15px 10px 0;
+}
+/*End*/
+
 md-toolbar.md-tall
 {
     height: 198px;
@@ -36,8 +45,22 @@ md-autocomplete
 	color:white;
 }
 
-md-tabs{
-	background: #FFF;
+
+md-content
+{
+    background-color: transparent !important;
+}
+md-content md-tabs
+{
+    background: #f6f6f6;
+}
+md-content md-tabs md-tabs-wrapper
+{
+    background: white;
+}
+md-content h1:first-child
+{
+    margin-top: 0;
 }
 
 md-tab-content md-list,
@@ -46,8 +69,10 @@ md-tab-content md-list,
 }
 md-tab-content md-list-item{
 	background:white;
-	margin:2.5% 2% 0;
+	margin:2.0% 2% 0;
 }
+
+/*Animations*/
 
 .animate-switch
 {
@@ -82,18 +107,21 @@ md-tab-content md-list-item{
   display:block;
   width:100%;
   position:absolute;
-  top:0;
   left:0;
-  right:0;
-  bottom:0;
-}
-
-.view-animate.ng-enter {
-  left:100%;
 }
 .view-animate.ng-enter.ng-enter-active {
   left:0;
+  opacity: 1;
+}
+.view-animate.ng-enter {
+  left:100%;
+  opacity: .5;
 }
 .view-animate.ng-leave.ng-leave-active {
   left:-100%;
+  opacity: 1;
+}
+
+[role="tabpanel"] {
+  transition:none;
 }
