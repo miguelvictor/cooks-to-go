@@ -1,42 +1,76 @@
-<md-toolbar md-scroll-shrink>
-	<div class="md-toolbar-tools">
-		<md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
-			<md-icon aria-label="Menu" md-svg-icon="navigation:menu"></md-icon>
-		</md-button>
-		<h1>
-		    {% verbatim %}
-		    	{{::active_template.title }}
-		    {% endverbatim %}
-		</h1>
-		<span flex></span>
-		<md-button class="md-icon-button">
-			<md-icon md-svg-icon="action:search" aria-label="People Icon"></md-icon>
-		</md-button>
-		<md-button class="md-icon-button">
-			<md-icon md-svg-icon="action:view_list" aria-label="List Grid"></md-icon>
-		</md-button>
+<div flex ng-switch on="isReading">
+	<div flex class="animate-switch" ng-switch-default>
+		<md-toolbar md-scroll-shrink>
+			<div class="md-toolbar-tools">
+				<md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
+					<md-icon aria-label="Menu" md-svg-icon="navigation:menu"></md-icon>
+				</md-button>
+				<h1>
+				    {% verbatim %}
+				    	{{::active_template.title }}
+				    {% endverbatim %}
+				</h1>
+				<span flex></span>
+				<md-button class="md-icon-button">
+					<md-icon md-svg-icon="action:search" aria-label="People Icon"></md-icon>
+				</md-button>
+				<md-button class="md-icon-button">
+					<md-icon md-svg-icon="action:view_list" aria-label="List Grid"></md-icon>
+				</md-button>
+			</div>
+		</md-toolbar>
+		<div flex layout="column">
+			<md-content>
+				{% verbatim %}
+				<md-tabs class="md-primary" md-stretch-tabs="always" md-dynamic-height md-border-bottom md-selected="recipetab">
+					<md-tab ng-repeat="tab in recipe_types" label="{{::tab.name }}" md-on-select="toggleRecipeTab($index)">
+						<md-list>
+							<md-list-item class="md-padding md-3-line custom-list md-whiteframe-z1 md-default-theme" ng-repeat="recipe in tab.recipes" ng-click="toogleRecipe(recipe)">
+								<img class="recipe-avatar" ng-src="{{::recipe.icon }}" />
+								<div class="md-list-item-text">
+									<h4>
+										{{::recipe.name }}
+									</h4>
+									<p>
+										{{::recipe.description | truncate:200 }}	
+									</p>
+								</div>
+							</md-list-item>
+						</md-list>
+					</md-tab>
+				</md-tabs>
+				{% endverbatim %}
+			</md-content>
+		</div>
 	</div>
-</md-toolbar>
-<div flex layout="column">
-	<md-content>
-		{% verbatim %}
-		<md-tabs class="md-primary" md-stretch-tabs="always" md-dynamic-height md-border-bottom md-selected="recipetab">
-			<md-tab ng-repeat="tab in recipe_types" label="{{::tab.name }}" md-on-select="toggleRecipeTab($index)">
-				<md-list>
-					<md-list-item class="md-padding md-3-line custom-list md-whiteframe-z1 md-default-theme" ng-repeat="recipe in tab.recipes">
-						<img class="recipe-avatar" ng-src="{{::recipe.icon }}" />
-						<div class="md-list-item-text">
-							<h4>
-								{{::recipe.name }}
-							</h4>
-							<p>
-								{{::recipe.description | truncate:200 }}	
-							</p>
-						</div>
-					</md-list-item>
-				</md-list>
-			</md-tab>
-		</md-tabs>
-		{% endverbatim %}
-	</md-content>
+	<div flex class="animate-switch" ng-switch-when="true">
+		<md-toolbar md-scroll-shrink>
+			<div class="md-toolbar-tools">
+				<md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
+					<md-icon aria-label="Menu" md-svg-icon="navigation:menu"></md-icon>
+				</md-button>
+				<md-button ng-click="toogleRecipeView()" class="md-icon-button">
+					<md-icon aria-label="Go Back" md-svg-icon="navigation:arrow_back"></md-icon>
+				</md-button>
+				<h1>
+				    {% verbatim %}
+				    	{{::viewRecipe.name }}
+				    {% endverbatim %}
+				</h1>
+				<span flex></span>
+				<md-button class="md-icon-button">
+					<md-icon md-svg-icon="action:search" aria-label="People Icon"></md-icon>
+				</md-button>
+				<md-button class="md-icon-button">
+					<md-icon md-svg-icon="action:favorite_border" aria-label="List Grid"></md-icon>
+				</md-button>
+			</div>
+		</md-toolbar>
+		<md-content>
+			{% verbatim %}
+				<img class="recipe_banner_class" ng-src="{{::viewRecipe.banner }}">
+			{%  endverbatim %}
+		</md-content>
+
+	</div>
 </div>

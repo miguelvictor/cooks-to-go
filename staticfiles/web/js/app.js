@@ -126,9 +126,25 @@
                 .error(function(response) {
                     alert("Error Upon Collecting Recipies");
                 });
+            // Returns the active tab for recipe types
             $scope.toggleRecipeTab = function(index){
                 $scope.recipetab = index;
-            }
+            };
+            $scope.viewRecipe = {};
+            $scope.isReading = false;
+            // Returns the active recipe and set a reading mode
+            $scope.toogleRecipe = function(recipeObject){
+                $scope.viewRecipe = recipeObject;
+                console.log($scope.viewRecipe);
+                $scope.toogleRecipeView();
+            };
+            // Action for visiting Reading and listing mode
+            $scope.toogleRecipeView = function(){
+                $scope.isReading = !$scope.isReading;
+                if (!$scope.isReading){
+                    $scope.viewRecipe = {};
+                }
+            };
         }])
         .controller('IngridientsCtrl', ['$http', '$scope', function($http, $scope){
             $scope.ingredientstab = 1;
