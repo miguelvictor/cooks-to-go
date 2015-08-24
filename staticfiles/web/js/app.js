@@ -22,22 +22,22 @@
         .config(['$routeProvider', '$locationProvider',
             function($routeProvider, $locationProvider) {
                 $routeProvider
-                    .when('/recipes', {
+                    .when('/Recipes', {
                         templateUrl: '/visit/recipe',
                         controller: 'RecipeCtrl',
                         controllerAs: 'Recipe'
                     })
-                    .when('/ingredients', {
+                    .when('/Ingredients', {
                         templateUrl: '/visit/ingredients',
                         controller: 'IngridientsCtrl',
                         controllerAs: 'Ingridients'
                     })
-                    .when('/virtual-basket', {
+                    .when('/Virtual-Basket', {
                         templateUrl: '/visit/virtual-basket',
                         controller: 'RecipeCtrl',
                         controllerAs: 'Recipe'
                     })
-                    .when('/settings', {
+                    .when('/Settings', {
                         templateUrl: '/visit/settings',
                         controller: 'RecipeCtrl',
                         controllerAs: 'Recipe'
@@ -84,19 +84,19 @@
             $scope.menus = [
                 {
                     icon: 'action:home',
-                    title: 'recipes'
+                    title: 'Recipes'
                 },
                 {
                     icon: 'action:home',
-                    title: 'ingredients'
+                    title: 'Ingredients'
                 },
                 {
                     icon: 'action:shopping_basket',
-                    title: 'virtual basket'
+                    title: 'Virtual Basket'
                 },
                 {
                     icon: 'action:settings',
-                    title: 'settings'
+                    title: 'Settings'
                 }
             ];
             $scope.active_template = $scope.menus[0];
@@ -135,7 +135,6 @@
             // Returns the active recipe and set a reading mode
             $scope.toogleRecipe = function(recipeObject){
                 $scope.viewRecipe = recipeObject;
-                console.log($scope.viewRecipe);
                 $scope.toogleRecipeView();
             };
             // Action for visiting Reading and listing mode
