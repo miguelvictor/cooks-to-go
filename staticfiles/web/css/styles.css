@@ -13,6 +13,11 @@ md-toolbar.md-tall
     min-height: 198px;
     max-height: 198px;
 }
+
+.md-padding-custom{
+  padding:0px 15px;
+}
+
 .md-padding
 {
     padding: 0 0 8px;
@@ -156,4 +161,8 @@ md-tab-content md-list-item{
   top:-10%;
   width: 100%;
   height: 500px;
+}
+
+.description-container{
+  line-height: 1.5;
 }

@@ -1,7 +1,7 @@
 <div flex ng-switch on="isReading">
 	<div flex class="animate-switch" ng-switch-default>
 		<md-toolbar md-scroll-shrink>
-			<div class="md-toolbar-tools">
+			<div class="md-toolbar-tools md-whiteframe-z1">
 				<md-button ng-click="toggleSidenav('left')" hide-gt-md class="md-icon-button">
 					<md-icon aria-label="Menu" md-svg-icon="navigation:menu"></md-icon>
 				</md-button>
@@ -45,10 +45,7 @@
 	</div>
 	<div flex class="animate-switch" ng-switch-when="true">
 		<md-toolbar md-scroll-shrink>
-			<div class="md-toolbar-tools">
-				<md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
-					<md-icon aria-label="Menu" md-svg-icon="navigation:menu"></md-icon>
-				</md-button>
+			<div class="md-toolbar-tools md-whiteframe-z1">
 				<md-button ng-click="toogleRecipeView()" class="md-icon-button">
 					<md-icon aria-label="Go Back" md-svg-icon="navigation:arrow_back"></md-icon>
 				</md-button>
@@ -66,11 +63,46 @@
 				</md-button>
 			</div>
 		</md-toolbar>
-		<md-content>
-			{% verbatim %}
-				<img class="recipe_banner_class" ng-src="{{::viewRecipe.banner }}">
-			{%  endverbatim %}
-		</md-content>
+		<div flex layout="column">
+			<md-content>
+				{% verbatim %}
+				<md-tabs class="md-primary md-sticky" md-dynamic-height md-border-bottom md-align-tabs="lef">
+					<md-tab label="Summary">
+						<md-content class="md-padding-custom">
+							<img class="recipe_banner_class" ng-src="{{::viewRecipe.banner }}">
+							<p class="md-padding-custom description-container">
+								{{::viewRecipe.description }}
+							</p>
+						</md-content>
+					</md-tab>
+					<md-tab label="Ingredients">
+						<md-content class="md-padding-custom">
+							<md-list>
+								<!-- <md-subheader class="md-no-sticky">Ingredients</md-subheader> -->
+								<md-list-item class="md-3-line custom-list" ng-repeat="item in viewRecipe.recipe_components">
+									<img class="recipe-avatar" ng-src="{{::item.ingredient.icon }}" />
+									<div class="md-list-item-text">
+										<p>{{:: item.quantity + ' ' + item.unit_of_measure.name  + ' ' +  item.ingredient.name }}</p>
+									</div>
+								</md-list-item>
+							</md-list>
+						</md-content>
+					</md-tab>
+					<md-tab label="Steps">
+						<md-content class="md-padding-custom">
+							<md-list>
+								<md-list-item class="md-3-line custom-list" ng-repeat="step in viewRecipe.steps">
+									<div class="md-list-item-text">
+										<p>{{:: step.sequence + '.   ' + step.instruction  }}</p>
+									</div>
+								</md-list-item>
+							</md-list>
+						</md-content>
+					</md-tab>
+				</md-tabs>
+				{% endverbatim %}
+			</md-content>
+		</div>
 
 	</div>
 </div>

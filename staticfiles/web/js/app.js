@@ -134,7 +134,18 @@
             $scope.isReading = false;
             // Returns the active recipe and set a reading mode
             $scope.toogleRecipe = function(recipeObject){
-                $scope.viewRecipe = recipeObject;
+                $scope.id = recipeObject.pk;
+                if(recipeObject.pk !== undefined){
+                    $http.get($scope.$parent.base_url('api/recipes/' + $scope.id))
+                        .success(function(response){
+                            $scope.viewRecipe = response;
+                        })
+                        .error(function(response){
+                            alert('Error Upon Connecting To The Recipe');
+                        });
+                }else{
+                    console.log('Error Upon Collecting Information Of The Selected Recipe');
+                }
                 $scope.toogleRecipeView();
             };
             // Action for visiting Reading and listing mode
