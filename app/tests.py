@@ -50,6 +50,21 @@ class CustomRecipeManagerTests(TestCase):
 '''
 
 
+class UtilityTests(TestCase):
+
+    def test_many_ingredients(self):
+        a = qwe('1,2,3')
+        self.assertEquals(a, [1,2,3])
+
+    def test_one_ingredient(self):
+        a = qwe('1')
+        self.assertEquals(a, [1])
+
+    def test_empty_string(self):
+        a = qwe('')
+        self.assertEquals(a, [])
+
+'''
 class FindRecipesTests(TestCase):
 
     fixtures = ['test_data']
@@ -68,3 +83,4 @@ class FindRecipesTests(TestCase):
         ingredients = [11, 12, 123]
         recipes = Recipe.objects.has_ingredients(ingredients)
         self.assertEquals(len(recipes), 0)
+'''

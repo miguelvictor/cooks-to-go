@@ -1,32 +1,26 @@
-def normalize_recipe_params(quantities, units, ingredients):
-    '''
-    Will make a tuple that groups the params. It is assumed that quantities,
-    units, and ingredients are arranged respectively. Returns False if their
-    lengths are uneven.
+def normalize_recipe_params(ingredients):
+    if ingredients is None or ingredients == '':
+        return []
 
-    Arguments:
-    quantities -- list of quantities
-    units -- list of units
-    ingredients -- list of ingredients
-    '''
-    if quantities or units or ingredients:
+    return [int(x) for x in ingredients.split(',')]
 
-        quantities = quantities.split(',')
-        units = units.split(',')
-        ingredients = ingredients.split(',')
+''' TEST '''
+'''
+a = normalize_recipe_params('1,2,3')
+if a == [1,2,3]:
+    print "Test 1 : PASSED"
+else:
+    print "Test 1 : FAILED"
 
-        q_len = len(quantities)
-        u_len = len(units)
-        i_len = len(ingredients)
+a = normalize_recipe_params('1')
+if a == [1]:
+    print "Test 2 : PASSED"
+else:
+    print "Test 2 : FAILED"
 
-        if q_len is u_len and u_len is i_len:
-            result = []
-
-            for i in range(0, q_len):
-                result.append({
-                    'quantity': float(quantities[i]),
-                    'unit': int(units[i]),
-                    'ingredient': int(ingredients[i]),
-                })
-
-            return result
+a = normalize_recipe_params('')
+if a == []:
+    print "Test 3 : PASSED"
+else:
+    print "Test 3 : FAILED"
+'''

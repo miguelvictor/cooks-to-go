@@ -103,18 +103,14 @@ class RecipeViewSet(viewsets.ReadOnlyModelViewSet):
     def list(self, request):
         '''
         Method override for URLs like:
-        http://<domain>/recipes/?quantities=1,2,3&units=1,2,3&ingredients=1,2,3
+        http://<domain>/recipes/?ingredients=1,2,3
         '''
-        data = normalize_recipe_params(
-            request.GET.get('quantities', None),
-            request.GET.get('units', None),
-            request.GET.get('ingredients', None),
-        )
+        data = normalize_recipe_params(request.GET.get('ingredients', None))
 
         # let's change the serializer for listing recipes
         # so that ingredients and steps are not included
         self.serializer_class = RecipeOverviewSerializer
-        if data is not None:
+        if data:
             self.queryset = models.Recipe.objects.has_ingredients(data)
         return super(RecipeViewSet, self).list(self, request)
 
