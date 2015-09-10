@@ -14,7 +14,7 @@ class RecipeInline(admin.TabularInline):
 class RecipeAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': [
-            'name', 'type', 'description',
+            'name', 'categories', 'description',
             'default_serving_size', 'time_to_complete',
         ]}),
         ('More Information', {'fields': ['banner', 'icon']}),
@@ -22,7 +22,7 @@ class RecipeAdmin(admin.ModelAdmin):
 
     inlines = (RecipeInline, StepInline)
     search_fields = 'name', 'description'
-    list_filter = 'type',
+    list_filter = 'categories',
 
 
 class IngredientAdmin(admin.ModelAdmin):

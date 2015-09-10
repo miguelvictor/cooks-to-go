@@ -5,9 +5,9 @@ def normalize_recipe_params(ingredients):
     return [int(x) for x in ingredients.split(',')]
 
 ''' TEST '''
-'''
+
 a = normalize_recipe_params('1,2,3')
-if a == [1,2,3]:
+if a == [1, 2, 3]:
     print "Test 1 : PASSED"
 else:
     print "Test 1 : FAILED"
@@ -23,4 +23,3 @@ if a == []:
     print "Test 3 : PASSED"
 else:
     print "Test 3 : FAILED"
-'''

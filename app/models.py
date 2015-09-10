@@ -26,8 +26,7 @@ class RecipeManager(models.Manager):
                     recipe_ok = recipe_ok & set(recipe_set[i])
                 except IndexError:
                     pass
-
-            return recipe_ok
+            return list(recipe_ok)
 
         # recipe_set.length here is 1 so we need to return the first element
         # which is a list containing the actual recipes
@@ -88,7 +87,7 @@ class IngredientType(models.Model):
 
 class Ingredient(models.Model):
     banner = models.URLField()
-    description = models.CharField(max_length=255)
+    description = models.TextField()
     icon = models.URLField()
     name = models.CharField(max_length=255)
     type = models.ForeignKey(IngredientType, related_name='ingredients')
@@ -111,9 +110,12 @@ class Recipe(models.Model):
     banner = models.URLField()
     default_serving_size = models.IntegerField()
     time_to_complete = models.FloatField()
-    type = models.ForeignKey(RecipeType, related_name='recipes')
+    categories = models.ManyToManyField(RecipeType, related_name='recipes')
 
     objects = RecipeManager()
+
+    class Meta:
+        ordering = 'name',
 
     def __unicode__(self):
         return self.name.capitalize()

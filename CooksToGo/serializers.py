@@ -1,6 +1,7 @@
 from app import models
 from rest_framework import serializers, viewsets
 from app.utils import normalize_recipe_params
+from rest_framework import filters
 
 
 class UnitOfMeasureSerializer(serializers.ModelSerializer):
@@ -60,7 +61,6 @@ class RecipeOverviewSerializer(serializers.ModelSerializer):
             'description',
             'banner',
             'icon',
-            'type',
         )
 
 
@@ -99,20 +99,17 @@ class RecipeSerializer(serializers.HyperlinkedModelSerializer):
 class RecipeViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Recipe.objects.all()
     serializer_class = RecipeSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name', 'description')
 
-    def list(self, request):
-        '''
-        Method override for URLs like:
-        http://<domain>/recipes/?ingredients=1,2,3
-        '''
-        data = normalize_recipe_params(request.GET.get('ingredients', None))
-
-        # let's change the serializer for listing recipes
-        # so that ingredients and steps are not included
-        self.serializer_class = RecipeOverviewSerializer
-        if data:
-            self.queryset = models.Recipe.objects.has_ingredients(data)
-        return super(RecipeViewSet, self).list(self, request)
+    def get_queryset(self):
+        ingredients = self.request.query_params.get('ingredients', None)
+        if ingredients is not None:
+            data = normalize_recipe_params(ingredients)
+            print models.Recipe.objects.has_ingredients(data)
+            return models.Recipe.objects.has_ingredients(data)
+        else:
+            return models.Recipe.objects.all()
 
 
 class RecipeTypeViewSet(viewsets.ReadOnlyModelViewSet):
@@ -128,3 +125,5 @@ class IngredientTypeViewSet(viewsets.ReadOnlyModelViewSet):
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Ingredient.objects.all()
     serializer_class = IngredientSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name', 'description')
