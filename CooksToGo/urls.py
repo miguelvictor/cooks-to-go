@@ -3,6 +3,8 @@ from django.contrib import admin
 
 from . import serializers
 
+from app.views import recommend_recipes
+
 from rest_framework import routers
 
 
@@ -15,6 +17,7 @@ router.register(r'ingredient-types', serializers.IngredientTypeViewSet)
 urlpatterns = [
     url(r'^', include('app.urls', namespace='app')),
     url(r'^api/', include(router.urls)),
+    url(r'^api/recipes/recommend$', recommend_recipes),
     url(
         r'^api-auth/',
         include('rest_framework.urls', namespace='rest_framework')

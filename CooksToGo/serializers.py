@@ -102,15 +102,6 @@ class RecipeViewSet(viewsets.ReadOnlyModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name', 'description')
 
-    def get_queryset(self):
-        ingredients = self.request.query_params.get('ingredients', None)
-        if ingredients is not None:
-            data = normalize_recipe_params(ingredients)
-            print models.Recipe.objects.has_ingredients(data)
-            return models.Recipe.objects.has_ingredients(data)
-        else:
-            return models.Recipe.objects.all()
-
 
 class RecipeTypeViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.RecipeType.objects.all()

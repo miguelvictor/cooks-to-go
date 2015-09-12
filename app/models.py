@@ -157,6 +157,9 @@ class Step(models.Model):
         # return 'Step ' + str(self.sequence) + ' of ' + self.recipe.name
         return 'Step %s' % str(self.sequence)
 
+    class Meta:
+        ordering = ['sequence']
+
 
 class Rating(models.Model):
     rating = models.IntegerField(default=0)

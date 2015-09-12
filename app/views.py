@@ -1,4 +1,9 @@
 from django.views.generic import TemplateView
+from django.http import JsonResponse
+
+from app.utils import normalize_recipe_params
+from app.models import Recipe
+from CooksToGo.serializers import RecipeSerializer
 
 
 class IndexView(TemplateView):
@@ -23,3 +28,29 @@ class WebView(TemplateView):
         except Exception:
             pass
         return context
+
+
+def recommend_recipes(request):
+    params = normalize_recipe_params(request.GET.get('q', None))
+
+    if params:
+        recipes = []
+
+        recipes_nearly_there = Recipe.objects.has_ingredients(params)
+
+        for recipe in Recipe.objects.all():
+            ingredients = [x.ingredient.id for x in recipe.recipe_components.all()]
+            if ingredients == params:
+                recipes.append(recipe)
+
+        recipes_nearly_there = list(set(recipes_nearly_there) - set(recipes))
+
+        return JsonResponse({
+            'recipes': RecipeSerializer(recipes, many=True).data,
+            'nearly_there': RecipeSerializer(recipes_nearly_there, many=True).data,
+        })
+    else:
+        return JsonResponse({
+            'recipes': [],
+            'nearly_there': [],
+        })

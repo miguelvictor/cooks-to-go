@@ -5,6 +5,7 @@ from app import models
 
 class StepInline(admin.TabularInline):
     model = models.Step
+    extra = 0
 
 
 class RecipeInline(admin.TabularInline):
