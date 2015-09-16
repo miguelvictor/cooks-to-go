@@ -59,7 +59,7 @@ def recommend_recipes(request):
 
         return JsonResponse({
             'recipes': RecipeSerializer(exact_recipes, many=True).data,
-            'nearly_there': json.JSONDecoder().decode(nearly_there_recipes),
+            'nearly_there': json.JSONDecoder().decode(json.dumps(nearly_there_recipes)),
         })
 
     else:
