@@ -34,6 +34,7 @@ def recommend_recipes(request):
     params = normalize_recipe_params(request.GET.get('q', None))
 
     if params:
+        params.sort()
         recipes = []
 
         recipes_nearly_there = Recipe.objects.has_ingredients(params)
