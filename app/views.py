@@ -5,6 +5,8 @@ from app.utils import normalize_recipe_params
 from app.models import Recipe
 from CooksToGo.serializers import RecipeSerializer
 
+import json
+
 
 class IndexView(TemplateView):
     template_name = 'app/index.html'
@@ -35,22 +37,29 @@ def recommend_recipes(request):
     print('Ingredients: ' + str(params))
 
     if params:
-        params.sort()
-        recipes = []
+        params = set(params)
 
-        recipes_nearly_there = Recipe.objects.has_ingredients(params)
+        exact_recipes = []
+        nearly_there_recipes = []
 
-        for recipe in Recipe.objects.all():
-            ingredients = [x.ingredient.id for x in recipe.recipe_components.all()].sort()
+        probable_recipes = Recipe.objects.has_ingredients(params)
 
-            if ingredients == params:
-                recipes.append(recipe)
+        for recipe in probable_recipes:
+            ingredients = set([x.ingredient.id for x in recipe.recipe_components.all()])
 
-        recipes_nearly_there = list(set(recipes_nearly_there) - set(recipes))
+            if ingredients.issubset(params):
+                exact_recipes.append(recipe)
+            else:
+                nearly_there_recipes.append({
+                    'recipe': RecipeSerializer(recipe, many=False).data,
+                    'missing_count': len(ingredients) - len(params)
+                })
+
+        nearly_there_recipes.sort(key=lambda x: x['missing_count'])
 
         return JsonResponse({
-            'recipes': RecipeSerializer(recipes, many=True).data,
-            'nearly_there': RecipeSerializer(recipes_nearly_there, many=True).data,
+            'recipes': RecipeSerializer(exact_recipes, many=True).data,
+            'nearly_there': json.dumps(nearly_there_recipes),
         })
     else:
         return JsonResponse({
