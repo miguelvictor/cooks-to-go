@@ -51,8 +51,8 @@ def recommend_recipes(request):
                 exact_recipes.append(recipe)
             else:
                 nearly_there_recipes.append({
-                    'recipe': json.load(RecipeSerializer(recipe, many=False).data),
-                    'missing_count': len(ingredients) - len(params)
+                    'recipe': json.loads(RecipeSerializer(recipe, many=False).data),
+                    'missing_count': len(ingredients) - len(params),
                 })
 
         nearly_there_recipes.sort(key=lambda x: x['missing_count'])
@@ -61,6 +61,7 @@ def recommend_recipes(request):
             'recipes': RecipeSerializer(exact_recipes, many=True).data,
             'nearly_there': json.dumps(nearly_there_recipes),
         })
+
     else:
         return JsonResponse({
             'recipes': [],
