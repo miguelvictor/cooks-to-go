@@ -32,6 +32,7 @@ class WebView(TemplateView):
 
 def recommend_recipes(request):
     params = normalize_recipe_params(request.GET.get('q', None))
+    print('Ingredients: ' + str(params))
 
     if params:
         params.sort()
@@ -41,8 +42,14 @@ def recommend_recipes(request):
 
         for recipe in Recipe.objects.all():
             ingredients = [x.ingredient.id for x in recipe.recipe_components.all()]
+            print('Ingredients of recipe ' + recipe.id)
+            print(str(ingredients))
+
             if ingredients == params:
                 recipes.append(recipe)
+            ''' else:
+                len(ingredients) - len(params)
+            '''
 
         recipes_nearly_there = list(set(recipes_nearly_there) - set(recipes))
 
