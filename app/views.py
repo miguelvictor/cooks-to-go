@@ -41,15 +41,10 @@ def recommend_recipes(request):
         recipes_nearly_there = Recipe.objects.has_ingredients(params)
 
         for recipe in Recipe.objects.all():
-            ingredients = [x.ingredient.id for x in recipe.recipe_components.all()]
-            print('Ingredients of recipe ' + recipe.id)
-            print(str(ingredients))
+            ingredients = [x.ingredient.id for x in recipe.recipe_components.all()].sort()
 
             if ingredients == params:
                 recipes.append(recipe)
-            ''' else:
-                len(ingredients) - len(params)
-            '''
 
         recipes_nearly_there = list(set(recipes_nearly_there) - set(recipes))
 
