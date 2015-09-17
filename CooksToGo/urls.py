@@ -3,7 +3,7 @@ from django.contrib import admin
 
 from . import serializers
 
-from app.views import recommend_recipes
+from app.views import recommend_recipes, testing_recipe
 
 from rest_framework import routers
 
