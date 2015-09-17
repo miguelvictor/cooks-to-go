@@ -42,13 +42,13 @@ def recommend_recipes(request):
         exact_recipes = []
         nearly_there_recipes = []
 
-        # probable_recipes = Recipe.objects.has_ingredients(params)
-        probable_recipes = Recipe.objects.all()
+        probable_recipes = Recipe.objects.has_ingredients(params)
 
         for recipe in probable_recipes:
             ingredients = set([x.ingredient.id for x in recipe.recipe_components.all()])
 
-            if ingredients.issubset(params):
+            # if ingredients.issubset(params):
+            if ingredients == params:
                 exact_recipes.append(recipe)
             else:
                 nearly_there_recipes.append({
