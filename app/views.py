@@ -120,7 +120,7 @@ def recommend_recipes(request):
             else:
                 nearly_there_recipes.append({
                     'recipe': RecipeSerializer(recipe, many=False).data,
-                    'missing': difference_length,
+                    'missing_count': difference_length,
                 })
 
     nearly_there_recipes.sort(key=lambda x: x['missing_count'])
