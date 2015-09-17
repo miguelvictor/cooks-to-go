@@ -32,6 +32,38 @@ class WebView(TemplateView):
         return context
 
 
+def testing_recipe(request):
+    params = set(normalize_recipe_params(request.GET.get('q', None)))
+
+    exact_recipes = []
+    nearly_there_recipes = []
+
+    for recipe in Recipe.objects.all():
+        ingredients = set([x.ingredient.id for x in recipe.recipe_components.all()])
+
+        intersection = params & ingredients
+
+        if len(intersection) > 0:
+
+            difference = ingredients - intersection
+            difference_length = len(difference)
+
+            if difference_length is 0:
+                exact_recipes.append(recipe)
+            else:
+                nearly_there_recipes.append({
+                    'recipe': RecipeSerializer(recipe, many=False).data,
+                    'missing': difference_length,
+                })
+
+    nearly_there_recipes.sort(key=lambda x: x['missing_count'])
+
+    return JsonResponse({
+        'recipes': RecipeSerializer(exact_recipes, many=True).data,
+        'nearly_there': json.JSONDecoder().decode(json.dumps(nearly_there_recipes)),
+    })
+
+
 def recommend_recipes(request):
     params = normalize_recipe_params(request.GET.get('q', None))
     print('Ingredients: ' + str(params))
@@ -48,8 +80,7 @@ def recommend_recipes(request):
             ingredients = set([x.ingredient.id for x in recipe.recipe_components.all()])
 
             # if ingredients.issubset(params):
-            # if ingredients == params:
-            if True:
+            if ingredients == params:
                 exact_recipes.append(recipe)
             else:
                 nearly_there_recipes.append({
