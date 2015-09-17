@@ -42,7 +42,8 @@ def recommend_recipes(request):
         exact_recipes = []
         nearly_there_recipes = []
 
-        probable_recipes = Recipe.objects.has_ingredients(params)
+        # probable_recipes = Recipe.objects.has_ingredients(params)
+        probable_recipes = Recipe.objects.all()
 
         for recipe in probable_recipes:
             ingredients = set([x.ingredient.id for x in recipe.recipe_components.all()])
