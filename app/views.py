@@ -48,7 +48,8 @@ def recommend_recipes(request):
             ingredients = set([x.ingredient.id for x in recipe.recipe_components.all()])
 
             # if ingredients.issubset(params):
-            if ingredients == params:
+            # if ingredients == params:
+            if True:
                 exact_recipes.append(recipe)
             else:
                 nearly_there_recipes.append({
