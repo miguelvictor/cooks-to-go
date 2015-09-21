@@ -156,15 +156,15 @@ def rating(request, id=None):
             else:
                 return JsonResponse({
                     'Status': '404',
-                    'Details': 'Something Went Wrong'
+                    'Details': 'Unable to save rating'
                 })
     except (ValueError, Recipe.DoesNotExist):
         return JsonResponse({
             'Status': '404',
             'Details': 'Recipe Not Found/Invalid Params'
         })
-    # except Exception:
-    #     return JsonResponse({
-    #         'Status': '404',
-    #         'Details': 'Something Went Wrong'
-    #     })
+    except Exception:
+        return JsonResponse({
+            'Status': '404',
+            'Details': 'Exception!!, Something Went Wrong'
+        })
