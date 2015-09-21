@@ -1,12 +1,11 @@
+import json
+from django.db.models import Avg
 from django.views.generic import TemplateView
 from django.http import JsonResponse
 
 from app.utils import normalize_recipe_params
-from app.models import Recipe
+from app.models import Recipe, Rating
 from CooksToGo.serializers import RecipeSerializer
-
-import json
-
 
 class IndexView(TemplateView):
     template_name = 'app/index.html'
@@ -129,3 +128,43 @@ def recommend_recipes(request):
         'recipes': RecipeSerializer(exact_recipes, many=True).data,
         'nearly_there': json.JSONDecoder().decode(json.dumps(nearly_there_recipes)),
     })
+
+
+def rating(request, id=None):
+    rating = request.GET.get('rate', None)
+    mac_address = request.GET.get('mac', None)
+    try:
+        recipe = Recipe.objects.get(pk=id)
+        if rating is None and mac_address is None:
+            ratings = Rating.objects.filter(recipe=recipe).aggregate(Avg('rating'))
+            return JsonResponse({
+                'Status': '200',
+                'Rating': ratings['rating__avg']
+            })
+        elif rating is None or mac_address is None:
+            return JsonResponse({
+                'Status': '404',
+                'Details': 'Request Not Authorized!'
+            })
+        else:
+            rate = Rating(recipe=recipe, rating=int(rating), who=mac_address)
+            if rate.save():
+                return JsonResponse({
+                    'Status': '200',
+                    'Details': 'Successfully Rated A Recipe'
+                })
+            else:
+                return JsonResponse({
+                    'Status': '404',
+                    'Details': 'Something Went Wrong'
+                })
+    except (ValueError, Recipe.DoesNotExist):
+        return JsonResponse({
+            'Status': '404',
+            'Details': 'Recipe Not Found/Invalid Params'
+        })
+    # except Exception:
+    #     return JsonResponse({
+    #         'Status': '404',
+    #         'Details': 'Something Went Wrong'
+    #     })
