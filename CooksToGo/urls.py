@@ -3,7 +3,7 @@ from django.contrib import admin
 
 from . import serializers
 
-from app.views import recommend_recipes, testing_recipe
+from app.views import recommend_recipes, rating
 
 from rest_framework import routers
 
@@ -18,7 +18,7 @@ urlpatterns = [
     url(r'^', include('app.urls', namespace='app')),
     url(r'^api/', include(router.urls)),
     url(r'^api/recipes/recommend$', recommend_recipes),
-    url(r'^api/recipes/test$', testing_recipe),
+    url(r'^api/recipes/(?P<id>[0-9]+)/rating/$', rating),
     url(
         r'^api-auth/',
         include('rest_framework.urls', namespace='rest_framework')
