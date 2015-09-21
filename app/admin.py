@@ -35,9 +35,20 @@ class IngredientAdmin(admin.ModelAdmin):
     search_fields = 'name', 'description'
     list_filter = 'type',
 
+
+class RatingAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields': ['recipe', 'rating', 'who']})
+    ]
+
+    search_fields = 'recipe', 'rating', 'who'
+    list_filter = 'recipe', 'rating', 'who'
+    list_display = ('recipe', 'rating', 'who')
+
 admin.site.register(models.RecipeType)
 admin.site.register(models.IngredientType)
 admin.site.register(models.RecipeComponent)
 admin.site.register(models.UnitOfMeasure)
 admin.site.register(models.Recipe, RecipeAdmin)
 admin.site.register(models.Ingredient, IngredientAdmin)
+admin.site.register(models.Rating, RatingAdmin)
