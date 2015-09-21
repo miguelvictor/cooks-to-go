@@ -148,16 +148,11 @@ def rating(request, id=None):
             })
         else:
             rate = Rating(recipe=recipe, rating=int(rating), who=mac_address)
-            if rate.save():
-                return JsonResponse({
-                    'Status': '200',
-                    'Details': 'Successfully Rated A Recipe'
-                })
-            else:
-                return JsonResponse({
-                    'Status': '404',
-                    'Details': 'Unable to save rating'
-                })
+            rate.save()
+            return JsonResponse({
+                'Status': '200',
+                'Details': 'Successfully Rated A Recipe'
+            })
     except (ValueError, Recipe.DoesNotExist):
         return JsonResponse({
             'Status': '404',
