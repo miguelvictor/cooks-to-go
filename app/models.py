@@ -164,7 +164,7 @@ class Step(models.Model):
 class Rating(models.Model):
     rating = models.IntegerField(default=0)
     recipe = models.ForeignKey(Recipe, related_name='ratings')
-    who = models.CharField(max_length='20')
+    who = models.CharField(max_length=20)
 
     def __unicode__(self):
-        return self.rating
+        return str(self.recipe) + ' ' + str(self.rating)
