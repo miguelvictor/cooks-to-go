@@ -1,4 +1,5 @@
 from app import models
+from django.db.models import Avg
 from rest_framework import serializers, viewsets
 from app.utils import normalize_recipe_params
 from rest_framework import filters
@@ -80,12 +81,14 @@ class RecipeTypeSerializer(serializers.HyperlinkedModelSerializer):
 class RecipeSerializer(serializers.HyperlinkedModelSerializer):
     recipe_components = RecipeComponentSerializer(many=True, read_only=True)
     steps = StepSerializer(many=True, read_only=True)
+    rating = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Recipe
         fields = (
             'pk',
             'name',
+            'rating',
             'description',
             'banner',
             'icon',
@@ -94,6 +97,9 @@ class RecipeSerializer(serializers.HyperlinkedModelSerializer):
             'recipe_components',
             'steps'
         )
+
+    def get_rating(self, obj):
+        return models.Rating.objects.filter(recipe=obj).aggregate(Avg('rating'))['rating__avg']
 
 
 class RecipeViewSet(viewsets.ReadOnlyModelViewSet):
