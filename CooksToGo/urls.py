@@ -18,7 +18,7 @@ urlpatterns = [
     url(r'^', include('app.urls', namespace='app')),
     url(r'^api/', include(router.urls)),
     url(r'^api/recipes/recommend$', recommend_recipes),
-    url(r'^api/recipes/(?P<id>[0-9]+)/rating/$', rating),
+    url(r'^api/recipes/(?P<id>[0-9]+)/rate/$', rating),
     url(
         r'^api-auth/',
         include('rest_framework.urls', namespace='rest_framework')
