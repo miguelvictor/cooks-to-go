@@ -1,7 +1,8 @@
 import json
+from django.db.models import Avg
+from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
-from django.http import JsonResponse
 
 from app.utils import normalize_recipe_params
 from app.models import Recipe, Rating
@@ -135,24 +136,34 @@ def rating(request, id=None):
     if request.method == 'POST':
         try:
             rating = request.POST['rating']
-            mac_address = request.POST['mac']
+            mac_address = request.POST['mac'].strip().upper()
             recipe = Recipe.objects.get(pk=id)
             if rating is not None and mac_address is not None:
-                rate = Rating(recipe=recipe, rating=int(rating), who=mac_address)
-                rate.save()
+                rate, created_status = Rating.objects.update_or_create(recipe=recipe, who=mac_address, defaults={'rating': rating})
+                # rate = Rating(recipe=recipe, rating=int(rating), who=mac_address)
+                # rate.save()
+
+                #  If Rating is newly created else
+                if created_status:
+                    Description = 'Successfully Rated a Recipe!'
+                else:
+                    Description = 'Successfully Updated Your Rating!'
+                # Get New Rating of Recipe
+                new_rating = Rating.objects.filter(recipe=recipe).aggregate(Avg('rating'))['rating__avg']
                 return JsonResponse({
                     'Status': '200',
-                    'Details': 'Successfully Rated A Recipe'
+                    'Details': Description,
+                    'Rating': new_rating
                 })
             else:
                 return JsonResponse({
                     'Status': '404',
                     'Details': 'Error! Invalid Params'
                 })
-        except (ValueError, Recipe.DoesNotExist):
+        except Recipe.DoesNotExist:
             return JsonResponse({
                 'Status': '404',
-                'Details': 'Recipe Not Found/Invalid Params'
+                'Details': 'Error!!, Recipe is not found!'
             })
         except Exception:
             return JsonResponse({
