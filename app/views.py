@@ -1,5 +1,5 @@
 import json
-# from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from django.http import JsonResponse
 
@@ -130,7 +130,7 @@ def recommend_recipes(request):
         'nearly_there': json.JSONDecoder().decode(json.dumps(nearly_there_recipes)),
     })
 
-# @csrf_exempt
+@csrf_exempt
 def rating(request, id=None):
     if request.method == 'POST':
         try:
