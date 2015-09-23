@@ -1,11 +1,12 @@
 import json
-from django.db.models import Avg
+# from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from django.http import JsonResponse
 
 from app.utils import normalize_recipe_params
 from app.models import Recipe, Rating
 from CooksToGo.serializers import RecipeSerializer
+
 
 class IndexView(TemplateView):
     template_name = 'app/index.html'
@@ -129,37 +130,37 @@ def recommend_recipes(request):
         'nearly_there': json.JSONDecoder().decode(json.dumps(nearly_there_recipes)),
     })
 
-
+# @csrf_exempt
 def rating(request, id=None):
-    rating = request.GET.get('rate', None)
-    mac_address = request.GET.get('mac', None)
-    try:
-        recipe = Recipe.objects.get(pk=id)
-        if rating is None and mac_address is None:
-            ratings = Rating.objects.filter(recipe=recipe).aggregate(Avg('rating'))
-            return JsonResponse({
-                'Status': '200',
-                'Rating': ratings['rating__avg']
-            })
-        elif rating is None or mac_address is None:
+    if request.method == 'POST':
+        try:
+            rating = request.POST['rating']
+            mac_address = request.POST['mac']
+            recipe = Recipe.objects.get(pk=id)
+            if rating is not None and mac_address is not None:
+                rate = Rating(recipe=recipe, rating=int(rating), who=mac_address)
+                rate.save()
+                return JsonResponse({
+                    'Status': '200',
+                    'Details': 'Successfully Rated A Recipe'
+                })
+            else:
+                return JsonResponse({
+                    'Status': '404',
+                    'Details': 'Error! Invalid Params'
+                })
+        except (ValueError, Recipe.DoesNotExist):
             return JsonResponse({
                 'Status': '404',
-                'Details': 'Request Not Authorized!'
+                'Details': 'Recipe Not Found/Invalid Params'
             })
-        else:
-            rate = Rating(recipe=recipe, rating=int(rating), who=mac_address)
-            rate.save()
+        except Exception:
             return JsonResponse({
-                'Status': '200',
-                'Details': 'Successfully Rated A Recipe'
+                'Status': '404',
+                'Details': 'Error!!, Something Went Wrong'
             })
-    except (ValueError, Recipe.DoesNotExist):
+    else:
         return JsonResponse({
             'Status': '404',
-            'Details': 'Recipe Not Found/Invalid Params'
-        })
-    except Exception:
-        return JsonResponse({
-            'Status': '404',
-            'Details': 'Exception!!, Something Went Wrong'
+            'Description': 'Request Not Secure!'
         })
