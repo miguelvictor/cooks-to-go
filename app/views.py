@@ -151,27 +151,27 @@ def rating(request, id=None):
                 # Get New Rating of Recipe
                 new_rating = Rating.objects.filter(recipe=recipe).aggregate(Avg('rating'))['rating__avg']
                 return JsonResponse({
-                    'Status': '200',
-                    'Details': Description,
-                    'Rating': new_rating
+                    'status': '200',
+                    'details': Description,
+                    'rating': new_rating
                 })
             else:
                 return JsonResponse({
-                    'Status': '404',
-                    'Details': 'Error! Invalid Params'
+                    'status': '404',
+                    'details': 'Error! Invalid Params'
                 })
         except Recipe.DoesNotExist:
             return JsonResponse({
-                'Status': '404',
-                'Details': 'Error!!, Recipe is not found!'
+                'status': '404',
+                'details': 'Error!!, Recipe is not found!'
             })
         except Exception:
             return JsonResponse({
-                'Status': '404',
-                'Details': 'Error!!, Something Went Wrong'
+                'status': '404',
+                'details': 'Error!!, Something Went Wrong'
             })
     else:
         return JsonResponse({
-            'Status': '404',
-            'Description': 'Request Not Secure!'
+            'status': '404',
+            'description': 'Request Not Secure!'
         })
