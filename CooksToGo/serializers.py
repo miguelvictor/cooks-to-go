@@ -103,7 +103,7 @@ class RecipeSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class RecipeViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = models.Recipe.objects.all()
+    queryset = models.Recipe.objects.all().order_by('name')
     serializer_class = RecipeSerializer
     filter_backends = (filters.SearchFilter,)
     # search_fields = ('name', 'description')
@@ -121,7 +121,7 @@ class IngredientTypeViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = models.Ingredient.objects.all()
+    queryset = models.Ingredient.objects.all().order_by('name')
     serializer_class = IngredientSerializer
     filter_backends = (filters.SearchFilter,)
     # search_fields = ('name', 'description')
