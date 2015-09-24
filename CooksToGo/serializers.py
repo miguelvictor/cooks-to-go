@@ -107,7 +107,7 @@ class RecipeViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = RecipeSerializer
     filter_backends = (filters.SearchFilter,)
     # search_fields = ('name', 'description')
-    search_fields = ('name')
+    search_fields = 'name',
 
 
 class RecipeTypeViewSet(viewsets.ReadOnlyModelViewSet):
@@ -125,4 +125,4 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = IngredientSerializer
     filter_backends = (filters.SearchFilter,)
     # search_fields = ('name', 'description')
-    search_fields = ('name')
+    search_fields = 'name',
