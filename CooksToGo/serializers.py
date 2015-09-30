@@ -82,6 +82,7 @@ class RecipeSerializer(serializers.HyperlinkedModelSerializer):
     recipe_components = RecipeComponentSerializer(many=True, read_only=True)
     steps = StepSerializer(many=True, read_only=True)
     rating = serializers.SerializerMethodField()
+    reviews = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Recipe
@@ -89,6 +90,7 @@ class RecipeSerializer(serializers.HyperlinkedModelSerializer):
             'pk',
             'name',
             'rating',
+	    'reviews',
             'description',
             'banner',
             'icon',
@@ -100,6 +102,9 @@ class RecipeSerializer(serializers.HyperlinkedModelSerializer):
 
     def get_rating(self, obj):
         return models.Rating.objects.filter(recipe=obj).aggregate(Avg('rating'))['rating__avg']
+    
+    def get_reviews(self, obj):
+	return len(models.Rating.objects.filter(recipe=obj))
 
 
 class RecipeViewSet(viewsets.ReadOnlyModelViewSet):
