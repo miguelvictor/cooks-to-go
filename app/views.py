@@ -150,10 +150,12 @@ def rating(request, id=None):
                     Description = 'Successfully Updated Your Rating!'
                 # Get New Rating of Recipe
                 new_rating = Rating.objects.filter(recipe=recipe).aggregate(Avg('rating'))['rating__avg']
+		new_review = len(Rating.objects.filter(recipe=recipe))
                 return JsonResponse({
                     'status': '200',
                     'details': Description,
-                    'rating': new_rating
+                    'rating': new_rating,
+		    'reviews': new_review
                 })
             else:
                 return JsonResponse({
