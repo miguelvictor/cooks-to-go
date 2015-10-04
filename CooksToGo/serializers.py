@@ -118,11 +118,13 @@ class RecipeViewSet(viewsets.ReadOnlyModelViewSet):
 class RecipeTypeViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.RecipeType.objects.all()
     serializer_class = RecipeTypeSerializer
+    ordering = 'name',
 
 
 class IngredientTypeViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.IngredientType.objects.all()
     serializer_class = IngredientTypeSerializer
+    ordering = 'name',
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
