@@ -1,8 +1,10 @@
-from app import models
 from django.db.models import Avg
-from rest_framework import serializers, viewsets
+
+from app import models
 from app.utils import normalize_recipe_params
-from rest_framework import filters
+from app.core import HeaderBasedPagination
+
+from rest_framework import serializers, viewsets, filters
 
 
 class UnitOfMeasureSerializer(serializers.ModelSerializer):
@@ -130,6 +132,44 @@ class IngredientTypeViewSet(viewsets.ReadOnlyModelViewSet):
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Ingredient.objects.all()
     serializer_class = IngredientSerializer
+    filter_backends = filters.SearchFilter, filters.OrderingFilter
+    search_fields = 'name',
+    ordering = 'name',
+
+
+'''
+APIv2 
+0.0.1 - Using header-based pagination
+'''
+
+
+class V2RecipeViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = models.Recipe.objects.all()
+    serializer_class = RecipeSerializer
+    pagination_class = HeaderBasedPagination
+    filter_backends = filters.SearchFilter, filters.OrderingFilter
+    search_fields = 'name',
+    ordering = 'name',
+
+
+class V2RecipeTypeViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = models.RecipeType.objects.all()
+    serializer_class = RecipeTypeSerializer
+    pagination_class = HeaderBasedPagination
+    ordering = 'name',
+
+
+class V2IngredientTypeViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = models.IngredientType.objects.all()
+    serializer_class = IngredientTypeSerializer
+    pagination_class = HeaderBasedPagination
+    ordering = 'name',
+
+
+class V2IngredientViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = models.Ingredient.objects.all()
+    serializer_class = IngredientSerializer
+    pagination_class = HeaderBasedPagination
     filter_backends = filters.SearchFilter, filters.OrderingFilter
     search_fields = 'name',
     ordering = 'name',

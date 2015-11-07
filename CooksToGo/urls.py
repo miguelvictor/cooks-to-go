@@ -14,9 +14,16 @@ router.register(r'recipe-types', serializers.RecipeTypeViewSet)
 router.register(r'ingredients', serializers.IngredientViewSet)
 router.register(r'ingredient-types', serializers.IngredientTypeViewSet)
 
+api_v2_router = routers.SimpleRouter()
+api_v2_router.register(r'recipes', serializers.V2RecipeViewSet)
+api_v2_router.register(r'recipe-types', serializers.V2RecipeTypeViewSet)
+api_v2_router.register(r'ingredients', serializers.V2IngredientViewSet)
+api_v2_router.register(r'ingredient-types', serializers.V2IngredientTypeViewSet)
+
 urlpatterns = [
     url(r'^', include('app.urls', namespace='app')),
     url(r'^api/', include(router.urls)),
+    url(r'^api-v2/', include(api_v2_router.urls)),
     url(r'^api/recipes/recommend$', recommend_recipes),
     url(r'^api/recipes/(?P<id>[0-9]+)/rate/$', rating),
     url(
